@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 "use client"
 import { BarChart, Download } from "lucide-react"
-import { Button, Select, MenuItem, Typography } from '@mui/material'
+import { Button, Typography } from '@mui/material'
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js'
 import Link from 'next/link'
 import TrainerProfileList from './TrainerProfileList' 
@@ -77,7 +77,7 @@ export default function TrainerPage() {
           </Button>
         </div>  
 
-        {/* Filters */}
+        {/* Filters
         <div className="filters">
           <Select defaultValue="all-stack">
             <MenuItem value="all-stack">All Stacks</MenuItem>
@@ -100,7 +100,7 @@ export default function TrainerPage() {
             <MenuItem value="development">Development</MenuItem>
             <MenuItem value="design">Design</MenuItem>
           </Select>
-        </div>
+        </div> */}
 
         {/* Trainer Profiles */}
         <div className="trainer-profiles">

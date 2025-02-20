@@ -69,7 +69,7 @@ export default function LearnersPage() {
           </Button>
         </div>  
 
-        {/* Filters */}
+        {/* Filters
         <div className="filters">
           <Select defaultValue="all-time">
             <MenuItem value="all-time">All-time</MenuItem>
@@ -88,7 +88,7 @@ export default function LearnersPage() {
             <MenuItem value="development">Development</MenuItem>
             <MenuItem value="design">Design</MenuItem>
           </Select>
-        </div>
+        </div> */}
 
         {/* Learner Profiles */}
         <div className="learner-profiles">

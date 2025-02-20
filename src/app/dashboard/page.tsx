@@ -12,10 +12,10 @@ import './dashboard.css' // Import the CSS file
 
 export default function DashboardPage() {
   const learnerActivityData = {
-    labels: ['Active', 'Inactive'],
+    labels: ['Enrolled', 'Not yet Enrolled'],
     datasets: [
       {
-        label: 'Learner Activity',
+        label: 'Number of Learners Enrolled',
         data: [120, 100],
         backgroundColor: ['#71a3c1', '#f5945c'],
         borderColor: ['#71a3c1', '#f5945c'],
@@ -25,8 +25,8 @@ export default function DashboardPage() {
   }
 
   const labels = {
-    active: learnerActivityData.datasets[0].data[0].toString(),
-    inactive: learnerActivityData.datasets[0].data[1].toString(),
+    enrolled: learnerActivityData.datasets[0].data[0].toString(),
+    notyetenrolled: learnerActivityData.datasets[0].data[1].toString(),
   }
 
   const stats = [

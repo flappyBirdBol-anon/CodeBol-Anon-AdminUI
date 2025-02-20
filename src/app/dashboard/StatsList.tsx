@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader } from '@mui/material';
 import { Pie } from 'react-chartjs-2'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const StatsCard = ({ stats }: { stats: { title: string; value: string; chart?: boolean; chartData?: any; labels?: { active: string; inactive: string } }[] }) => {
+const StatsCard = ({ stats }: { stats: { title: string; value: string; chart?: boolean; chartData?: any; labels?: { enrolled: string; notyetenrolled: string } }[] }) => {
   return (
     <div className="stats-grid">
       {stats.map((stat) => (
@@ -20,11 +20,11 @@ const StatsCard = ({ stats }: { stats: { title: string; value: string; chart?: b
                   <div className="labels">
                     <div className="label">
                       <span className="color-indicator" style={{ backgroundColor: stat.chartData.datasets[0].backgroundColor[0] }}></span>
-                      Active: {stat.labels.active}
+                      Enrolled: {stat.labels.enrolled}
                     </div>
                     <div className="label">
                       <span className="color-indicator" style={{ backgroundColor: stat.chartData.datasets[0].backgroundColor[1] }}></span>
-                      Inactive: {stat.labels.inactive}
+                      Not yet Enrolled: {stat.labels.notyetenrolled}
                     </div>
                   </div>
                 )}
