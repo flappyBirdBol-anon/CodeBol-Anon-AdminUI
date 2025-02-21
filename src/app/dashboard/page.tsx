@@ -1,16 +1,26 @@
 /* eslint-disable @next/next/no-img-element */
 "use client"
 import { BarChart, Download } from "lucide-react"
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined';
+import GroupOutlinedIcon from '@mui/icons-material/GroupOutlined';
 import { Button, Select, MenuItem, Typography } from '@mui/material'
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js'
 import Link from 'next/link'
 import StatsList from './StatsList'
 import CourseList from './CourseList'
+import { useState } from 'react';
 
 ChartJS.register(ArcElement, Tooltip, Legend)
 import './dashboard.css' // Import the CSS file
 
 export default function DashboardPage() {
+  const [sidebarVisible, setSidebarVisible] = useState(false);
+
+  const toggleSidebar = () => {
+    setSidebarVisible(!sidebarVisible);
+  };
+
   const learnerActivityData = {
     labels: ['Enrolled', 'Not yet Enrolled'],
     datasets: [
@@ -52,8 +62,15 @@ export default function DashboardPage() {
 
   return (
     <div className="dashboard-container">
+      {/* Burger Menu */}
+      <div className="burger-menu" onClick={toggleSidebar}>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+
       {/* Sidebar */}
-      <div className="sidebar">
+      <div className={`sidebar ${sidebarVisible ? 'visible' : ''}`}>
         <div className="sidebar-header">  
           <img src="/logo/170x100.png" alt="Logo" className="avatar" />
           <Typography variant="h5" className="title">Dashboard</Typography>
@@ -61,19 +78,24 @@ export default function DashboardPage() {
 
         <nav className="sidebar-nav">
           <Link href="/dashboard" passHref>
-            <Button variant="contained" className="button active" startIcon={<BarChart />}>
+            <Button variant="contained" className="button active" startIcon={<DashboardIcon />}>
               Dashboard
             </Button>
           </Link>
 
-          {["Trainers", "Learners"].map((item) => (
-            <Link key={item} href={`/${item.toLowerCase()}`} passHref>
-              <Button variant="text" className="button" startIcon={<BarChart />}>
-                {item}
-              </Button>
-            </Link>
-          ))}
+          <Link href="/trainers" passHref>
+            <Button variant="text" className="button" startIcon={<PersonOutlinedIcon />}>
+              Trainers
+            </Button>
+          </Link>
+
+          <Link href="/learners" passHref>
+            <Button variant="text" className="button" startIcon={<GroupOutlinedIcon />}>
+              Learners
+            </Button>
+          </Link>
         </nav>
+        
         <div className="sidebar-support">
           <Typography variant="subtitle1" className="support-title">Support</Typography>
           {["Get Started", "Settings"].map((item) => (
@@ -85,7 +107,8 @@ export default function DashboardPage() {
         <div className="sidebar-footer">
           <img src="/logo/170x100.png" alt="Logo" className="adminavatar" />
           <Typography variant="body2" className="footer-text">Admin</Typography>
-          <Typography variant="body2" className="footer-text">© 2021 Company Name</Typography>
+          <Typography variant="body2" className="footer-text2">© 2025 Company Name</Typography>
+          <Typography variant="body2" className="footer-text2">Created by the FlappyBords CodeBol-anon team</Typography>
         </div>
       </div>
 

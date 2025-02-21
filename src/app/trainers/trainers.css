@@ -83,6 +83,13 @@
   object-fit: cover;
 }
 
+.sidebar-footer .footer-text {
+  font-size: 0.875rem; 
+  font-weight: 500; 
+  margin-bottom: 2rem;
+}
+
+
 /* End of Sidebar */
 /* Main Content */
 
@@ -214,5 +221,5 @@
 }
 
 .profile-info .profile-name {
-  font-size: 2rem; 
+  font-size: 1.5rem; 
 }

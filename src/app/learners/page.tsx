@@ -1,7 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
-"use client"
+"use client"   
 import { BarChart, Download } from "lucide-react"
-import { Button, Select, MenuItem, Typography } from '@mui/material'
+import { Button, Typography } from '@mui/material'
+import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined';
+import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined';
+import Group from '@mui/icons-material/Group';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js'
 import Link from 'next/link'
 import LearnerProfileList from './LearnerProfileList' 
@@ -25,26 +28,29 @@ export default function LearnersPage() {
       <div className="sidebar">
         <div className="sidebar-header">  
           <img src="/logo/170x100.png" alt="Logo" className="avatar" />
-          <Typography variant="h5" className="title">FlappyBords</Typography>
+          <Typography variant="h5" className="title">Learners</Typography>
         </div>
 
         <nav className="sidebar-nav">
+          <Link href="/dashboard" passHref>
+            <Button variant="text" className="button" startIcon={<DashboardOutlinedIcon />}>
+              Dashboard
+            </Button>
+          </Link>
 
-          {["Dashboard", "Trainers"].map((item) => (
-            <Link key={item} href={`/${item.toLowerCase()}`} passHref>
-              <Button variant="text" className="button" startIcon={<BarChart />}>
-                {item}
-              </Button>
-            </Link>
-          ))}
+          <Link href="/trainers" passHref>
+            <Button variant="text" className="button" startIcon={<PersonOutlinedIcon />}>
+              Trainers
+            </Button>
+          </Link>
 
           <Link href="/learners" passHref>
-            <Button variant="contained" className="button active" startIcon={<BarChart />}>
+            <Button variant="contained" className="button active" startIcon={<Group />}>
               Learners
             </Button>
           </Link>
-          
         </nav>
+
         <div className="sidebar-support">
           <Typography variant="subtitle1" className="support-title">Support</Typography>
           {["Get Started", "Settings"].map((item) => (
@@ -56,7 +62,8 @@ export default function LearnersPage() {
         <div className="sidebar-footer">
           <img src="/logo/170x100.png" alt="Logo" className="adminavatar" />
           <Typography variant="body2" className="footer-text">Admin</Typography>
-          <Typography variant="body2" className="footer-text">© 2021 Company Name</Typography>
+          <Typography variant="body2" className="footer-text2">© 2025 Company Name</Typography>
+          <Typography variant="body2" className="footer-text2">Created by the FlappyBords CodeBol-anon team</Typography>
         </div>
       </div>
 

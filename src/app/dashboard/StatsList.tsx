@@ -7,7 +7,7 @@ const StatsCard = ({ stats }: { stats: { title: string; value: string; chart?: b
   return (
     <div className="stats-grid">
       {stats.map((stat) => (
-        <Card key={stat.title} className="stats-card">
+        <Card key={stat.title} className={`stats-card ${stat.chart ? 'learner-activity-card' : ''}`}>
           <CardHeader title={<span className="title">{stat.title}</span>} />
           <CardContent className="card-content">
             <div className="value">{stat.value}</div>
