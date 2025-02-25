@@ -1,8 +1,15 @@
 import React from 'react';
 import ProfileList from '../components/ProfileList';
+import { useRouter } from 'next/navigation';
 
-const LearnerProfileList = ({ learners }: { learners: { name: string; image: string }[] }) => {
-  return <ProfileList profiles={learners} title="Learner Profiles" />;
+const LearnersProfileList = ({ learners }: { learners: { name: string; image: string; id: string }[] }) => {
+  const router = useRouter();
+
+  const handleProfileClick = (id: string) => {
+    router.push(`/learners/${id}`);
+  };
+
+  return <ProfileList profiles={learners} title="Learners Profiles" onProfileClick={handleProfileClick} />;
 };
 
-export default LearnerProfileList;
+export default LearnersProfileList;

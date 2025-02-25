@@ -4,12 +4,13 @@ import React from 'react';
 import { useRouter } from 'next/navigation';
 import { Button, Typography, Box } from '@mui/material';
 import './landingpage.css';
+import withAuth from '../components/withAuth';
 
-export default function LandingPage() {
+const LandingPage = () => {
   const router = useRouter();
 
-  const handleButtonClick = () => {
-    router.push('/dashboard'); 
+  const navigateTo = (path: string) => {
+    router.push(path);
   };
 
   return (
@@ -19,10 +20,12 @@ export default function LandingPage() {
         <Typography variant="h5" className="landing-title">Welcome to the Admin Dashboard</Typography>
         <Typography variant="body1" className="landing-message">You have successfully logged in.</Typography>
         <Typography variant="body1" className="landing-message">Welcome User.</Typography>
-        <Button variant="contained" color="primary" fullWidth className="landing-button" onClick={handleButtonClick}>
+        <Button variant="contained" color="primary" fullWidth className="landing-button" onClick={() => navigateTo('/dashboard')}>
           Lets Go!
         </Button>
       </Box>
     </div>
   );
 }
+
+export default withAuth(LandingPage);

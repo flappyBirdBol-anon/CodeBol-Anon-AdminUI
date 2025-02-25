@@ -4,21 +4,33 @@ import { BarChart, Download } from "lucide-react"
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined';
 import GroupOutlinedIcon from '@mui/icons-material/GroupOutlined';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import { Button, Select, MenuItem, Typography } from '@mui/material'
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js'
-import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import StatsList from './StatsList'
 import CourseList from './CourseList'
 import { useState } from 'react';
+import withAuth from '../components/withAuth';
 
 ChartJS.register(ArcElement, Tooltip, Legend)
 import './dashboard.css' // Import the CSS file
 
-export default function DashboardPage() {
+const DashboardPage = () => {
+  const router = useRouter();
   const [sidebarVisible, setSidebarVisible] = useState(false);
 
   const toggleSidebar = () => {
     setSidebarVisible(!sidebarVisible);
+  };
+
+  const navigateTo = (path: string) => {
+    router.push(path);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('authToken');
+    router.push('/login');
   };
 
   const learnerActivityData = {
@@ -77,23 +89,21 @@ export default function DashboardPage() {
         </div>
 
         <nav className="sidebar-nav">
-          <Link href="/dashboard" passHref>
-            <Button variant="contained" className="button active" startIcon={<DashboardIcon />}>
-              Dashboard
-            </Button>
-          </Link>
+          <Button variant="contained" className="button active" startIcon={<DashboardIcon />} onClick={() => navigateTo('/dashboard')}>
+            Dashboard
+          </Button>
 
-          <Link href="/trainers" passHref>
-            <Button variant="text" className="button" startIcon={<PersonOutlinedIcon />}>
-              Trainers
-            </Button>
-          </Link>
+          <Button variant="text" className="button" startIcon={<PersonOutlinedIcon />} onClick={() => navigateTo('/trainers')}>
+            Trainers
+          </Button>
 
-          <Link href="/learners" passHref>
-            <Button variant="text" className="button" startIcon={<GroupOutlinedIcon />}>
-              Learners
-            </Button>
-          </Link>
+          <Button variant="text" className="button" startIcon={<GroupOutlinedIcon />} onClick={() => navigateTo('/learners')}>
+            Learners
+          </Button>
+
+          <Button variant="text" className="button" startIcon={<ExitToAppIcon />} onClick={handleLogout}>
+            Logout
+          </Button>
         </nav>
         
         <div className="sidebar-support">
@@ -154,3 +164,5 @@ export default function DashboardPage() {
     </div>
   )
 }
+
+export default withAuth(DashboardPage);

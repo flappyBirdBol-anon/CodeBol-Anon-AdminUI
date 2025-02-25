@@ -107,60 +107,17 @@
   
   .main-content .header .title {
     font-size: 1.5rem; 
-    font-weight: 700; 
+    font-weight: 900; 
   }
   
-  .main-content .header .button {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
   
-  .main-content .header .button .icon {
-    width: 24px;
-    height: 24px;
-  }
+  /* Trainer */
   
-  .filters {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1rem; 
-    margin-bottom: 2rem; 
-    min-width: 250px; 
-    flex-shrink: 0;
-    min-width: 150px; /* Adjust the min-width as needed */
-  }
-  
-  /* Learner */
-  
-  .title {
-    color: #4d4e52;
+  .main-content .title {
+    color: #303030;
   }
 
-  .learner-profile-list {
-    margin-top: 2rem;
-  }
-  
-  .search-filter-container {
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1rem;
-    display: flex;
-  }
-
-  .search-input {
-    flex: 1;
-    margin-right: 1rem;
-    max-width: 500px; 
-  }
-
-  .learner-profiles-grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 2rem;
-  }
-
-  .learner-profile {
+  .trainer-profile {
     display: flex;
     align-items: center;
     gap: 1rem;
@@ -170,64 +127,71 @@
     flex: 1 1 calc(33.333% - 2rem); 
   } 
   
-  .learner-profiles {
-    border: 1px solid #000000;
-    border-radius: 8px;
-  }
-  
-  .learner-info {
-    display: flex; 
-    flex-direction: column;
-  }
-
-  .learner-info .learner-name {
-    font-size: 2rem; 
-  }
-  
-  .progress {
-    color: #6b7280;
-  }
-
-  .profile-list {
-    margin-top: 2rem;
-  }
-  
-  .profiles-grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 2rem;
-  }
-  
-  .profile {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    border: 1px solid #000;
-    padding: 1rem;
-    border-radius: 8px;
-    flex: 1 1 calc(33.333% - 2rem); 
-    cursor: pointer;
-    transition: transform 0.2s;
-  } 
-
-  .profile:hover {
-    transform: translateY(-5px);
-  }
-  
-  .profile-image {
-    width: 100px;
-    height: 100px;
+  .trainer-profile .trainer-image {
+    width: 150px;
+    height: 150px;
     border-radius: 50%;
     object-fit: cover;
   }
-  
-  .profile-info {
-    display: flex; 
+
+  .trainer-description-box {
+    display: flex;
     flex-direction: column;
+    gap: 1rem;
+    border: 1px solid #000;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-top: 1rem;
   }
-  
-  .profile-info .profile-name {
-    font-size: 1.5rem; 
+
+  .trainer-description-box .description-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+  }
+
+  .trainer-description-box .description-content {
+    font-size: 1rem;
+    color: #303030;
+  }
+
+  .content-boxes {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start; 
+    gap: 1rem; 
+  }
+
+  .trainer-description-box, .trainer-expertise-box {
+    width: 48%;
+    flex-grow: 1;
+    border: 1px solid #000;
+    padding: 1rem;
+    border-radius: 5px;
+    margin-top: 1rem;
+  }
+
+  .trainer-expertise-box .expertise-title {
+    font-size: 1.25rem;
+    font-weight: 700;  
+  }
+
+  .expertise-list {
+    list-style-type: none;
+    padding-left: 0;
+  }
+
+  .content-boxes .expertise-item {
+    margin: 5px 0;
+    padding: 10px;
+    border-radius: 5px;
+    position: relative;
+  }
+
+  .content-boxes .expertise-item::before {
+    content: "•";
+    position: absolute;
+    left: -2px;
+    color: #333;
   }
 
   /* Burger Reactive elements */
@@ -308,4 +272,3 @@
     font-size: 1rem;
   }
 }
-

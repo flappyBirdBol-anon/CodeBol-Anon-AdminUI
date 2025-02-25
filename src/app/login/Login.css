@@ -42,3 +42,15 @@
   .login-container .login-button {
     margin-bottom: 16px;
   }
+
+  .login-box.error {
+    border: 1px solid red;
+  }
+
+  .login-container .login-textfield.error .MuiOutlinedInput-notchedOutline {
+    border-color: red;
+  }
+
+  .error-message {
+    margin-top: 10px;
+  }

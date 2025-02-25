@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, Typography, TextField, Select, MenuItem, SelectChangeEvent } from '@mui/material';
 
-const ProfileList = ({ profiles, title }: { profiles: { name: string; image: string }[], title: string }) => {
+const ProfileList = ({ profiles, title, onProfileClick }: { profiles: { name: string; image: string; id: string }[], title: string, onProfileClick: (id: string) => void }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [sortOrder, setSortOrder] = useState('A-Z');
 
@@ -45,7 +45,7 @@ const ProfileList = ({ profiles, title }: { profiles: { name: string; image: str
         </div>
         <div className="profiles-grid">
           {filteredProfiles.map((profile) => (
-            <div key={profile.name} className="profile">
+            <div key={profile.id} className="profile" onClick={() => onProfileClick(profile.id)}>
               <img src={profile.image} alt={profile.name} className="profile-image" />
               <div className="profile-info">
                 <Typography variant="subtitle1" className="profile-name">{profile.name}</Typography>

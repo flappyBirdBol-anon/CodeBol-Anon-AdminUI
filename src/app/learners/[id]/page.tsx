@@ -1,22 +1,32 @@
 /* eslint-disable @next/next/no-img-element */
-"use client"   
-import { BarChart, Download } from "lucide-react"
-import { Button, Typography } from '@mui/material'
+"use client";  
+
+import React from 'react';
+import { useParams } from 'next/navigation'; 
+import { Typography, Card, CardContent, Button } from '@mui/material';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined';
-import GroupOutlinedIcon from '@mui/icons-material/GroupOutlined';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js'
+import GroupOutlinedIcon from '@mui/icons-material/GroupOutlined';
 import { useRouter } from 'next/navigation'
-import LearnerProfileList from './LearnerProfileList'
+import './learnerprofile.css'; // Import the CSS file
 import { useState } from 'react';
-import withAuth from '../components/withAuth';
+import withAuth from '../../components/withAuth';
+import { BarChart } from 'lucide-react';
 
-ChartJS.register(ArcElement, Tooltip, Legend)
-import './learners.css' // Import the CSS file
+const learners = [
+  { id: '1', name: 'Adrianne', image: '/Image/kat.jpg', description: 'Learners description for Adrianne', interests: ['React', 'Node.js'] },
+  { id: '2', name: 'Charlie', image: '/Image/burritocat.webp', description: 'Learners description for Charlie', interests: ['Python', 'Django'] },
+  { id: '3', name: 'Jhobert', image: '/Image/Anime.jpg', description: 'Learners description for Jhobert', interests: ['Java', 'Spring'] },
+  { id: '4', name: 'Jessa', image: '/Image/kat.jpg', description: 'Learners description for Jessa', interests: ['C#', '.NET'] },
+  { id: '5', name: 'Brianne', image: '/Image/burritocat.webp', description: 'Learners description for Brianne', interests: ['Ruby', 'Rails'] },
+  { id: '6', name: 'Tim', image: '/Image/kat.jpg', description: 'Learners description for Tim', interests: ['Go', 'Kubernetes'] },
+];
 
-const LearnersPage = () => {
-
+const LearnerDetail = () => {
+  const { id } = useParams() as { id: string };
+  const learner = learners.find((learner) => learner.id === id);
+  
   const router = useRouter();
   const [sidebarVisible, setSidebarVisible] = useState(false);
 
@@ -33,19 +43,14 @@ const LearnersPage = () => {
     router.push('/login');
   };
 
-  const learners = [
-    { id: '1', name: 'Adrianne', image: './Image/kat.jpg' },
-    { id: '2', name: 'Charlie', image: './Image/burritocat.webp' },
-    { id: '3', name: 'Jhobert', image: './Image/Anime.jpg' },
-    { id: '4', name: 'Jessa', image: './Image/kat.jpg' },
-    { id: '5', name: 'Brianne', image: './Image/burritocat.webp' },
-    { id: '6', name: 'Tim', image: './Image/kat.jpg' },
-  ];
+  if (!learner) {
+    return <Typography variant="h5">Learner not found</Typography>;
+  }
 
   return (
     <div className="dashboard-container">
       {/* Burger Menu */}
-        <div className="burger-menu" onClick={toggleSidebar}>
+      <div className="burger-menu" onClick={toggleSidebar}>
         <div></div>
         <div></div>
         <div></div>
@@ -94,40 +99,35 @@ const LearnersPage = () => {
       {/* Main Content */}
       <div className="main-content">
         <div className="header">
-          <Typography variant="h4" className="title">Learners Page</Typography>
-          <Button variant="outlined" className="button" startIcon={<Download />}>
-            Download
-          </Button>
+          <Typography variant="h4" className="title">Learner Detail</Typography>
         </div>  
 
-        {/* Filters
-        <div className="filters">
-          <Select defaultValue="all-time">
-            <MenuItem value="all-time">All-time</MenuItem>
-            <MenuItem value="this-month">This Month</MenuItem>
-            <MenuItem value="last-month">Last Month</MenuItem>
-          </Select>
+        <Card className="learner-card">
+          <CardContent className="learner-card-content">
+            <div className="learner-profile">
+              <img src={learner.image} alt={learner.name} className="learner-image" />
+              <Typography variant="h4" className="learner-name">{learner.name}</Typography>
+            </div>
+          </CardContent>
+        </Card>
 
-          <Select defaultValue="all">
-            <MenuItem value="all">All</MenuItem>
-            <MenuItem value="trainers">Trainers</MenuItem>
-            <MenuItem value="learners">Learners</MenuItem>
-          </Select>
-
-          <Select defaultValue="all">
-            <MenuItem value="all">All</MenuItem>
-            <MenuItem value="development">Development</MenuItem>
-            <MenuItem value="design">Design</MenuItem>
-          </Select>
-        </div> */}
-
-        {/* Learner Profiles */}
-        <div className="learner-profiles">
-        <LearnerProfileList learners={learners} />
+        <div className="content-boxes">
+          <div className="learner-description-box">
+            <Typography variant="h5" className="description-title">Description</Typography>
+            <Typography variant="body1" className="description-content">{learner.description}</Typography>
+          </div>
+          <div className="learner-interests-box">
+            <Typography variant="h5" className="interests-title">Interests</Typography>
+            <ul className="interests-list">
+              {learner.interests.map((interest, index) => (
+                <li key={index} className="interests-item">{interest}</li>
+              ))}
+            </ul>
+          </div>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default withAuth(LearnersPage);
+export default withAuth(LearnerDetail);

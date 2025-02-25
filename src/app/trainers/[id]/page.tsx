@@ -1,29 +1,31 @@
 /* eslint-disable @next/next/no-img-element */
-"use client"
-import { BarChart, Download } from "lucide-react"
-import { Button, Typography } from '@mui/material'
+"use client";  
+
+import React from 'react';
+import { BarChart } from 'lucide-react';
+import { useParams } from 'next/navigation'; 
+import { Typography, Card, CardContent, Button } from '@mui/material';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined';
 import GroupOutlinedIcon from '@mui/icons-material/GroupOutlined';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js'
 import { useRouter } from 'next/navigation'
-import TrainerProfileList from './TrainerProfileList' 
+import './trainerprofile.css'; // Import the CSS file
 import { useState } from 'react';
-import withAuth from '../components/withAuth';
+import withAuth from '../../components/withAuth';
 
-ChartJS.register(ArcElement, Tooltip, Legend)
-import './trainers.css' // Import the CSS file
+const trainers = [
+  { id: '1', name: 'Adrianne', image: '/Image/kat.jpg', description: 'Trainer description for Adrianne', expertise: ['React', 'Node.js'] },
+  { id: '2', name: 'Charlie', image: '/Image/burritocat.webp', description: 'Trainer description for Charlie', expertise: ['Python', 'Django'] },
+  { id: '3', name: 'Jhobert', image: '/Image/Anime.jpg', description: 'Trainer description for Jhobert', expertise: ['Java', 'Spring'] },
+  { id: '4', name: 'Jessa', image: '/Image/kat.jpg', description: 'Trainer description for Jessa', expertise: ['C#', '.NET'] },
+  { id: '5', name: 'Brianne', image: '/Image/burritocat.webp', description: 'Trainer description for Brianne', expertise: ['Ruby', 'Rails'] },
+  { id: '6', name: 'Tim', image: '/Image/kat.jpg', description: 'Trainer description for Tim', expertise: ['Go', 'Kubernetes'] },
+];
 
-const TrainersPage = () => {
-  const trainers = [
-    { id: '1', name: 'Adrianne', image: './Image/kat.jpg' },
-    { id: '2', name: 'Charlie', image: './Image/burritocat.webp' },
-    { id: '3', name: 'Jhobert', image: './Image/Anime.jpg' },
-    { id: '4', name: 'Jessa', image: './Image/kat.jpg' },
-    { id: '5', name: 'Brianne', image: './Image/burritocat.webp' },
-    { id: '6', name: 'Tim', image: './Image/kat.jpg' },
-  ];
+const TrainerDetail = () => {
+  const { id } = useParams() as { id: string };
+  const trainer = trainers.find((trainer) => trainer.id === id);
 
   const router = useRouter();
   const [sidebarVisible, setSidebarVisible] = useState(false);
@@ -40,6 +42,10 @@ const TrainersPage = () => {
     localStorage.removeItem('authToken');
     router.push('/login');
   };
+
+  if (!trainer) {
+    return <Typography variant="h5">Trainer not found</Typography>;
+  }
 
   return (
     <div className="dashboard-container">
@@ -93,44 +99,35 @@ const TrainersPage = () => {
       {/* Main Content */}
       <div className="main-content">
         <div className="header">
-          <Typography variant="h4" className="title">Trainer Page</Typography>
-          <Button variant="outlined" className="button" startIcon={<Download />}>
-            Download
-          </Button>
+          <Typography variant="h4" className="title">Trainer Detail</Typography>
         </div>  
 
-        {/* Filters
-        <div className="filters">
-          <Select defaultValue="all-stack">
-            <MenuItem value="all-stack">All Stacks</MenuItem>
-            <MenuItem value="flutter">Flutter</MenuItem>
-            <MenuItem value="react">React</MenuItem>
-            <MenuItem value="c#">C#</MenuItem>
-            <MenuItem value="c++">C++</MenuItem>
-            <MenuItem value="unity">Unity</MenuItem>
-            <MenuItem value="laravel">Laravel</MenuItem>
-          </Select>
+        <Card className="trainer-card">
+          <CardContent className="trainer-card-content">
+            <div className="trainer-profile">
+              <img src={trainer.image} alt={trainer.name} className="trainer-image" />
+              <Typography variant="h4" className="trainer-name">{trainer.name}</Typography>
+            </div>
+          </CardContent>
+        </Card>
 
-          <Select defaultValue="all">
-            <MenuItem value="all">All</MenuItem>
-            <MenuItem value="learner">Learners</MenuItem>
-            <MenuItem value="trainer">Trainer</MenuItem>
-          </Select>
-
-          <Select defaultValue="all">
-            <MenuItem value="all">All</MenuItem>
-            <MenuItem value="development">Development</MenuItem>
-            <MenuItem value="design">Design</MenuItem>
-          </Select>
-        </div> */}
-
-        {/* Trainer Profiles */}
-        <div className="trainer-profiles">
-        <TrainerProfileList trainers={trainers} />
+        <div className="content-boxes">
+          <div className="trainer-description-box">
+            <Typography variant="h5" className="description-title">Description</Typography>
+            <Typography variant="body1" className="description-content">{trainer.description}</Typography>
+          </div>
+          <div className="trainer-expertise-box">
+            <Typography variant="h5" className="expertise-title">Expertise</Typography>
+            <ul className="expertise-list">
+              {trainer.expertise.map((skill, index) => (
+                <li key={index} className="expertise-item">{skill}</li>
+              ))}
+            </ul>
+          </div>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default withAuth(TrainersPage);
+export default withAuth(TrainerDetail);

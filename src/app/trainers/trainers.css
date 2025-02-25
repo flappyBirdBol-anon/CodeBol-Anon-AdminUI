@@ -206,7 +206,12 @@
   padding: 1rem;
   border-radius: 8px;
   flex: 1 1 calc(33.333% - 2rem); 
+  transition: transform 0.2s;
 } 
+
+.profile:hover {
+  transform: translateY(-5px);
+}
 
 .profile-image {
   width: 100px;
@@ -223,3 +228,83 @@
 .profile-info .profile-name {
   font-size: 1.5rem; 
 }
+
+/* Burger Reactive elements */
+
+.burger-menu {
+  display: none;
+  cursor: pointer;
+  padding: 1rem;
+}
+
+.burger-menu div {
+  width: 25px;
+  height: 3px;
+  background-color: #333;
+  margin: 5px 0;
+  transition: 0.4s;
+}
+
+.sidebar.hidden {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .burger-menu {
+    display: block;
+  }
+
+  .dashboard-container {
+    flex-direction: column;
+  }
+
+  .dashboard-container .sidebar {
+    width: 100%;
+    order: 1;
+    display: none;
+  }
+
+  .dashboard-container .sidebar.visible {
+    display: flex;
+  }
+
+  .main-content {
+    order: 2;
+    padding: 1rem;
+  }
+
+  .main-content .filters {
+    grid-template-columns: 1fr;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .course-lists {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .sidebar-header .title {
+    font-size: 1rem;
+  }
+
+  .sidebar-nav .button {
+    font-size: 0.875rem;
+  }
+
+  .main-content .header .title {
+    font-size: 1.25rem;
+  }
+
+  .stats-card .value {
+    font-size: 1.5rem;
+  }
+
+  .stats-card .label {
+    font-size: 1rem;
+  }
+}
+
