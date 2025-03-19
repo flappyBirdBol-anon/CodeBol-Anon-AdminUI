@@ -15,6 +15,7 @@ const ProfileList = ({ profiles, title, onProfileClick }: { profiles: { name: st
   };
 
   const sortedProfiles = [...profiles].sort((a, b) => {
+    if (!a.name || !b.name) return 0; // Add check to ensure names are defined
     if (sortOrder === 'A-Z') {
       return a.name.localeCompare(b.name);
     } else {
@@ -23,7 +24,7 @@ const ProfileList = ({ profiles, title, onProfileClick }: { profiles: { name: st
   });
 
   const filteredProfiles = sortedProfiles.filter((profile) =>
-    profile.name.toLowerCase().startsWith(searchTerm.toLowerCase())
+    profile.name && profile.name.toLowerCase().startsWith(searchTerm.toLowerCase()) // Add check to ensure name is defined
   );
 
   return (

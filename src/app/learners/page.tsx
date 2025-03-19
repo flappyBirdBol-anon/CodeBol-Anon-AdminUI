@@ -1,133 +1,139 @@
 /* eslint-disable @next/next/no-img-element */
-"use client"   
-import { BarChart, Download } from "lucide-react"
+"use client"
+import { Download } from "lucide-react"
 import { Button, Typography } from '@mui/material'
-import DashboardIcon from '@mui/icons-material/Dashboard';
+import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined';
 import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined';
-import GroupOutlinedIcon from '@mui/icons-material/GroupOutlined';
+import GroupIcon from '@mui/icons-material/Group';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js'
 import { useRouter } from 'next/navigation'
 import LearnerProfileList from './LearnerProfileList'
-import { useState } from 'react';
-import withAuth from '../components/withAuth';
+import { useEffect, useState } from 'react';
+import { ProtectedRoute } from '../components/ProtectedRoute';
+import { useAuth } from '../components/AuthContext';
 
 ChartJS.register(ArcElement, Tooltip, Legend)
-import './learners.css' // Import the CSS file
+import './learners.css'
+import axios from "axios";
+
+interface AdminProfile {
+  email: string;
+  first_name: string;
+  last_name: string;
+}
 
 const LearnersPage = () => {
-
+  const { logout } = useAuth();
   const router = useRouter();
   const [sidebarVisible, setSidebarVisible] = useState(false);
+  const [adminProfile, setAdminProfile] = useState<AdminProfile | null>(null);
 
   const toggleSidebar = () => {
     setSidebarVisible(!sidebarVisible);
-  };  
+  };
 
   const navigateTo = (path: string) => {
     router.push(path);
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem('authToken');
-    router.push('/login');
-  };
+  useEffect(() => {
+    const fetchAdminProfile = async () => {
+      const token = localStorage.getItem('adminToken');
+      if (!token) return;
 
-  const learners = [
-    { id: '1', name: 'Adrianne', image: './Image/kat.jpg' },
-    { id: '2', name: 'Charlie', image: './Image/burritocat.webp' },
-    { id: '3', name: 'Jhobert', image: './Image/Anime.jpg' },
-    { id: '4', name: 'Jessa', image: './Image/kat.jpg' },
-    { id: '5', name: 'Brianne', image: './Image/burritocat.webp' },
-    { id: '6', name: 'Tim', image: './Image/kat.jpg' },
-  ];
+      try {
+        const response = await axios.get('http://143.198.197.240/api/profile/me', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        
+        if (response.data && response.data.data) {
+          setAdminProfile(response.data.data);
+        }
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          console.error('Axios error fetching admin profile:', error.response?.data || error.message);
+        } else {
+          console.error('Unexpected error fetching admin profile:', error);
+        }
+      }
+    };
+
+    fetchAdminProfile();
+  }, []);
 
   return (
-    <div className="dashboard-container">
-      {/* Burger Menu */}
+    <ProtectedRoute>
+      <div className="dashboard-container">
+        {/* Burger Menu */}
         <div className="burger-menu" onClick={toggleSidebar}>
-        <div></div>
-        <div></div>
-        <div></div>
-      </div>
-      {/* Sidebar */}
-      <div className={`sidebar ${sidebarVisible ? 'visible' : ''}`}>
-        <div className="sidebar-header">  
-          <img src="/logo/170x100.png" alt="Logo" className="avatar" />
-          <Typography variant="h5" className="title">Dashboard</Typography>
+          <div></div>
+          <div></div>
+          <div></div>
         </div>
+        {/* Sidebar */}
+        <div className={`sidebar ${sidebarVisible ? 'visible' : ''}`}>
+          <div className="sidebar-header">
+            <img src="/logo/170x100.png" alt="Logo" className="avatar" />
+            <Typography variant="h5" className="title">Dashboard</Typography>
+          </div>
 
-        <nav className="sidebar-nav">
-          <Button variant="text" className="button" startIcon={<DashboardIcon />} onClick={() => navigateTo('/dashboard')}>
-            Dashboard
-          </Button>
-
-          <Button variant="text" className="button" startIcon={<PersonOutlinedIcon />} onClick={() => navigateTo('/trainers')}>
-            Trainers
-          </Button>
-
-          <Button variant="contained" className="button active" startIcon={<GroupOutlinedIcon />} onClick={() => navigateTo('/learners')}>
-            Learners
-          </Button>
-
-          <Button variant="text" className="button" startIcon={<ExitToAppIcon />} onClick={handleLogout}>
-            Logout
-          </Button>
-        </nav>
-        
-        <div className="sidebar-support">
-          <Typography variant="subtitle1" className="support-title">Support</Typography>
-          {["Get Started", "Settings"].map((item) => (
-            <Button key={item} variant="text" className="button" startIcon={<BarChart />}>
-              {item}
+          <nav className="sidebar-nav">
+            <Button variant="text" className="button" startIcon={<DashboardOutlinedIcon />} onClick={() => navigateTo('/dashboard')}>
+              Dashboard
             </Button>
-          ))}
+
+            <Button variant="text" className="button" startIcon={<PersonOutlinedIcon />} onClick={() => navigateTo('/trainers')}>
+              Trainers
+            </Button>
+
+            <Button variant="contained" className="button active" startIcon={<GroupIcon />} onClick={() => navigateTo('/learners')}>
+              Learners
+            </Button>
+
+            <Button variant="text" className="button" startIcon={<ExitToAppIcon />} onClick={logout}>
+              Logout
+            </Button>
+          </nav>
+
+          <div className="sidebar-footer">
+            <img src="/logo/170x100.png" alt="Logo" className="adminavatar" />
+            {adminProfile ? (
+              <>
+                <Typography variant="body2" className="admin-name">
+                  {adminProfile.first_name} {adminProfile.last_name}
+                </Typography>
+                <Typography variant="body2" className="admin-email">
+                  {adminProfile.email}
+                </Typography>
+              </>
+            ) : (
+              <Typography variant="body2" className="footer-text">Loading...</Typography>
+            )}
+            <Typography variant="body2" className="footer-text2">© 2025 Company Name</Typography>
+            <Typography variant="body2" className="footer-text2">Created by the FlappyBords CodeBol-anon team</Typography>
+          </div>
         </div>
-        <div className="sidebar-footer">
-          <img src="/logo/170x100.png" alt="Logo" className="adminavatar" />
-          <Typography variant="body2" className="footer-text">Admin</Typography>
-          <Typography variant="body2" className="footer-text2">© 2025 Company Name</Typography>
-          <Typography variant="body2" className="footer-text2">Created by the FlappyBords CodeBol-anon team</Typography>
+
+        {/* Main Content */}
+        <div className="main-content">
+          <div className="header">
+            <Typography variant="h4" className="title">Learners Page</Typography>
+            <Button variant="outlined" className="button" startIcon={<Download />}>
+              Download
+            </Button>
+          </div>
+
+          {/* Learner Profiles */}
+          <div className="learner-profiles">
+            <LearnerProfileList />
+          </div>
         </div>
       </div>
-
-      {/* Main Content */}
-      <div className="main-content">
-        <div className="header">
-          <Typography variant="h4" className="title">Learners Page</Typography>
-          <Button variant="outlined" className="button" startIcon={<Download />}>
-            Download
-          </Button>
-        </div>  
-
-        {/* Filters
-        <div className="filters">
-          <Select defaultValue="all-time">
-            <MenuItem value="all-time">All-time</MenuItem>
-            <MenuItem value="this-month">This Month</MenuItem>
-            <MenuItem value="last-month">Last Month</MenuItem>
-          </Select>
-
-          <Select defaultValue="all">
-            <MenuItem value="all">All</MenuItem>
-            <MenuItem value="trainers">Trainers</MenuItem>
-            <MenuItem value="learners">Learners</MenuItem>
-          </Select>
-
-          <Select defaultValue="all">
-            <MenuItem value="all">All</MenuItem>
-            <MenuItem value="development">Development</MenuItem>
-            <MenuItem value="design">Design</MenuItem>
-          </Select>
-        </div> */}
-
-        {/* Learner Profiles */}
-        <div className="learner-profiles">
-        <LearnerProfileList learners={learners} />
-        </div>
-      </div>
-    </div>
+    </ProtectedRoute>
   )
 }
 
-export default withAuth(LearnersPage);
+export default LearnersPage;

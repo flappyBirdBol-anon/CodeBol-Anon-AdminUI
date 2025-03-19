@@ -1,26 +1,103 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @next/next/no-img-element */
-import React from 'react';
-import { Card, CardContent, CardHeader, Typography } from '@mui/material';
+import React, { useEffect, useState } from "react";
+import { Card, CardContent, CardHeader, Typography } from "@mui/material";
+import axios from "axios";
 
-const CourseList = ({ title, courses }: { title: string; courses: { title: string; progress: number; enrolled: string; image: string }[] }) => {
+// Define the interface based on what your API actually returns
+interface CourseItem {
+  id: number;
+  title: string;
+  description: string;
+  thumbnail: string;
+  price: string;
+  user_id: number;
+  created_at: string;
+  lessons_count: number;
+}
+
+interface CourseListProps {
+  title: string;
+  courses: CourseItem[];
+}
+
+const CourseList: React.FC<CourseListProps> = ({ title, courses = [] }) => {
+  const [token, setToken] = useState<string | null>(null);
+
+  useEffect(() => {
+    const storedToken = localStorage.getItem("adminToken");
+    setToken(storedToken);
+
+    if (storedToken) {
+      axios.defaults.headers.common["Authorization"] = `Bearer ${storedToken}`;
+    }
+
+    return () => {
+      delete axios.defaults.headers.common["Authorization"];
+    };
+  }, []);
+
   return (
     <Card className="course-list">
       <CardHeader title={<span className="title">{title}</span>} />
       <CardContent>
-        {courses.map((course) => (
-          <div key={course.title} className="course">
-            <div className="course-header">
-              <img src={course.image} alt={course.title} className="course-image" />
-              <Typography variant="subtitle1">{course.title}</Typography>
-              <Typography variant="body2" className="progress">{course.progress}% {course.enrolled}</Typography>
-            </div>
-            <div className="progress-bar-container">
-              <div className="progress-bar" style={{ width: `${course.progress}%` }} />
-            </div>
-          </div>
-        ))}
+        {courses.length === 0 ? (
+          <Typography variant="body1">No courses available</Typography>
+        ) : (
+          courses.map((course) => <CourseItem key={course.id} course={course} />)
+        )}
       </CardContent>
     </Card>
+  );
+};
+
+const CourseItem = ({ course }: { course: CourseItem }) => {
+  const [imageSrc, setImageSrc] = useState<string | null>(null);
+
+  useEffect(() => {
+    let imageUrl: string | null = null;
+
+    const fetchImage = async () => {
+      try {
+        const response = await fetch(`http://143.198.197.240/api/${course.thumbnail}`,{headers: {Authorization: `bearer ${localStorage.getItem('adminToken')}`}});
+        if (!response.ok) throw new Error("Failed to fetch image");
+
+        const blob = await response.blob();
+        imageUrl = URL.createObjectURL(blob);
+        setImageSrc(imageUrl);
+      } catch (error) {
+        console.error("Error fetching image:", error);
+        setImageSrc("/Image/anime1.jpg"); // Fallback image
+      }
+    };
+
+    fetchImage();
+
+    return () => {
+      if (imageUrl) URL.revokeObjectURL(imageUrl);
+    };
+  }, [course.thumbnail]);
+
+  return (
+    <div key={course.id} className="course">
+      <div className="course-header">
+        <img
+          src={imageSrc || "/Image/anime2.jpg"}
+          alt={course.title}
+          className="course-image"
+        />
+        <div className="course-details">
+          <Typography variant="subtitle1" className="course-title">
+            {course.title}
+          </Typography>
+          <Typography variant="body2" className="course-description">{course.description}</Typography>
+          <Typography variant="body2" className="course-price">
+            Price: {course.price}
+          </Typography>
+          <Typography variant="body2" className="course-lessons">Lessons: {course.lessons_count || 0}</Typography>
+        </div>
+      </div>
+    </div>
   );
 };
 
