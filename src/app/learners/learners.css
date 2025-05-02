@@ -1,25 +1,26 @@
 .dashboard-container {
     display: flex;
     min-height: 100vh;
+    background-color: #1e2a3a; /* Dark blue-gray background */
   }
   
   /* Sidebar */
   
   .sidebar {
     width: 16rem; 
-    background-color: var(--sidebar-background);
     padding: 1rem; 
     display: flex;
     flex-direction: column;
     gap: 1.5rem; 
-    border: 1px solid #ccc;
+    border: 1px solid #2c3e50;
+    background-color: #263141; /* Slightly lighter than main background */
   }
   
   .sidebar-header {
     display: flex;
-    align-items: center;
-    gap: 0.75rem; 
-    padding: 0.5rem; 
+    padding: 1rem;
+    border-bottom: 1px solid #364759;
+    margin-bottom: 1rem;
   }
   
   .sidebar-header .avatar {
@@ -32,6 +33,12 @@
   .sidebar-header .title {
     font-size: 1.125rem; 
     font-weight: 600; 
+  }
+
+  .sidebar-header .admin-info {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
   }
   
   .sidebar-nav {
@@ -108,6 +115,8 @@
   .main-content {
     flex: 1;
     padding: 2rem;
+    background-color: #1e2a3a;
+    color: #e0e0e0;
   }
   
   .main-content .header {
@@ -115,22 +124,26 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 2rem; 
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #364759;
   }
   
   .main-content .header .title {
     font-size: 1.5rem; 
     font-weight: 700; 
+    color: #e0e0e0;
   }
   
   .main-content .header .button {
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    background-color: #0078ff;
+    color: white;
   }
   
-  .main-content .header .button .icon {
-    width: 24px;
-    height: 24px;
+  .main-content .header .button:hover {
+    background-color: #0056b3;
   }
   
   /* .filters {
@@ -146,16 +159,28 @@
   /* Learner */
   
   .title {
-    color: #4d4e52;
+    color: #e0e0e0;
+    font-weight: 600;
+  }
+
+  .main-content .profile-list .title {
+    color: #e0e0e0;
+    font-weight: 600;
+    font-size: 1.75rem;
   }
 
   .learner-profile-list {
     margin-top: 2rem;
+    background-color: #1e2a3a; /* Match page background */
+    border-radius: 8px;
+    padding: 1.5rem;
+    border: 1px solid #364759;
   }
   
   .search-filter-container {
     display: flex;
     gap: 1rem; /* Space between search and filter */
+    margin-bottom: 1.5rem;
   }
   
   .search-input, .filters {
@@ -165,75 +190,73 @@
     max-width: 300px; /* Prevent excessive stretching */
     grid-template-columns: repeat(3, 1fr);
     gap: 1rem; 
-    margin-bottom: 2rem; 
+    margin-bottom: 0; 
     min-width: 250px; 
     flex-shrink: 0;
     min-width: 150px;
   }
   
+  .search-input input {
+    background-color: #263141; /* Make input fields stand out from page background */
+    color: #e0e0e0;
+    border: 1px solid #364759;
+    border-radius: 4px;
+    padding: 0.75rem;
+  }
+  
   .filters select {
     width: 100%;
     height: 100%;
+    background-color: #263141; /* Make filters stand out from page background */
+    color: #e0e0e0;
+    border: 1px solid #364759;
+    border-radius: 4px;
+    padding: 0.75rem;
   }
 
-  .learner-profiles-grid {
+  .learner-profiles-grid, .profiles-grid {
     display: flex;
     flex-wrap: wrap;
     gap: 2rem;
   }
 
-  .learner-profile {
+  .learner-profile, .profile {
     display: flex;
     align-items: center;
     gap: 1rem;
-    border: 1px solid #000;
+    border: 1px solid #364759;
     padding: 1rem;
     border-radius: 8px;
-    flex: 1 1 calc(33.333% - 2rem); 
-  } 
-  
-  .learner-profiles {
-    border: 1px solid #000000;
-    border-radius: 8px;
-  }
-  
-  .learner-info {
-    display: flex; 
-    flex-direction: column;
-  }
-
-  .learner-info .learner-name {
-    font-size: 2rem; 
-  }
-  
-  .progress {
-    color: #6b7280;
-  }
-
-  .profile-list {
-    margin-top: 2rem;
-  }
-  
-  .profiles-grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 2rem;
-  }
-  
-  .profile {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    border: 1px solid #000;
-    padding: 1rem;
-    border-radius: 8px;
-    flex: 1 1 calc(33.333% - 2rem); 
+    flex: 1 1 calc(33.333% - 2rem);
+    background-color: #263141; /* Lighter than main background to indicate clickable */
+    color: #e0e0e0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
     cursor: pointer;
-    transition: transform 0.2s;
   } 
-
+  
   .profile:hover {
     transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    background-color: #2c3d52; /* Even lighter on hover */
+  }
+  
+  .profile.active::before, 
+  .profile.inactive::before {
+    content: '';
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 8px;
+  }
+  
+  .profile.active::before {
+    background-color: #19d228; /* Green circle */
+  }
+  
+  .profile.inactive::before {
+    background-color: #d32f2f; /* Red circle */
   }
   
   .profile-image {
@@ -241,6 +264,7 @@
     height: 100px;
     border-radius: 50%;
     object-fit: cover;
+    border: 2px solid #364759;
   }
   
   .profile-info {
@@ -250,6 +274,13 @@
   
   .profile-info .profile-name {
     font-size: 1.5rem; 
+    color: #e0e0e0;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  
+  .profile-info .profile-email {
+    color: #a0aec0;
   }
 
   /* Burger Reactive elements */
@@ -263,7 +294,7 @@
 .burger-menu div {
   width: 25px;
   height: 3px;
-  background-color: #333;
+  background-color: #e0e0e0;
   margin: 5px 0;
   transition: 0.4s;
 }
@@ -325,5 +356,53 @@
   .stats-card .label {
     font-size: 1rem;
   }
+}
+
+/* Fix the background color of profile lists */
+.profile-list {
+  margin-top: 0; 
+  padding: 1.5rem;
+  background-color: #1e2a3a; /* Match the page background */
+  border: 1px solid #364759;
+  border-radius: 8px;
+}
+
+/* Override Material UI Paper/Card components */
+.MuiPaper-root, 
+.MuiCard-root, 
+.MuiPaper-root.MuiPaper-elevation.MuiPaper-rounded.MuiPaper-elevation1.MuiCard-root,
+.css-137kwej-MuiPaper-root-MuiCard-root,
+div[class*="MuiPaper-root"] {
+  background-color: #1e2a3a !important; /* Page background */
+  color: #e0e0e0 !important;
+  box-shadow: none !important;
+  border: 1px solid #364759 !important;
+}
+
+/* Fix the background color in the profile list */
+.profile-list,
+.learner-profiles,
+div[class*="learner-profiles"] {
+  background-color: #1e2a3a !important; /* Page background */
+  border: 1px solid #364759 !important;
+}
+
+/* Fix input fields */
+.MuiInputBase-root,
+.MuiOutlinedInput-root,
+.MuiTextField-root .MuiInputBase-root {
+  background-color: #263141 !important; /* Lighter than background */
+  color: #e0e0e0 !important;
+}
+
+.MuiOutlinedInput-notchedOutline {
+  border-color: #364759 !important;
+}
+
+/* Fix dropdown selectors */
+.MuiSelect-select,
+.MuiSelect-outlined {
+  background-color: #263141 !important;
+  color: #e0e0e0 !important;
 }
 

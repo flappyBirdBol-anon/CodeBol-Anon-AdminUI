@@ -2,7 +2,21 @@
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, Typography, TextField, Select, MenuItem, SelectChangeEvent } from '@mui/material';
 
-const ProfileList = ({ profiles, title, onProfileClick }: { profiles: { name: string; image: string; id: string }[], title: string, onProfileClick: (id: string) => void }) => {
+interface Profile {
+  id: string;
+  name: string;
+  image: string;
+  email: string;
+  isActive: boolean;
+}
+
+interface ProfileListProps {
+  profiles: Profile[];
+  title: string;
+  onProfileClick: (id: string) => void;
+}
+
+const ProfileList: React.FC<ProfileListProps> = ({ profiles, title, onProfileClick }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [sortOrder, setSortOrder] = useState('A-Z');
 
@@ -46,10 +60,15 @@ const ProfileList = ({ profiles, title, onProfileClick }: { profiles: { name: st
         </div>
         <div className="profiles-grid">
           {filteredProfiles.map((profile) => (
-            <div key={profile.id} className="profile" onClick={() => onProfileClick(profile.id)}>
+            <div
+              key={profile.id}
+              className={`profile ${profile.isActive ? 'active' : 'inactive'}`}
+              onClick={() => onProfileClick(profile.id)}
+            >
               <img src={profile.image} alt={profile.name} className="profile-image" />
               <div className="profile-info">
                 <Typography variant="subtitle1" className="profile-name">{profile.name}</Typography>
+                <Typography variant="body1">{profile.email}</Typography>
               </div>
             </div>
           ))}

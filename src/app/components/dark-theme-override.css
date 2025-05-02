@@ -1,0 +1,121 @@
+/* Global overrides for Material UI components to match dark theme */
+
+/* Card and Paper components */
+.MuiPaper-root, 
+.MuiCard-root, 
+div[class*="MuiPaper-root"],
+div[class*="MuiCard-root"] {
+  background-color: #1e2a3a !important; /* Dark background */
+  color: #e0e0e0 !important;
+  box-shadow: none !important;
+  border: 1px solid #364759 !important;
+}
+
+/* Input fields */
+.MuiInputBase-root,
+.MuiOutlinedInput-root,
+.MuiTextField-root .MuiInputBase-root,
+.MuiInput-root,
+div[class*="MuiInputBase-root"],
+div[class*="MuiOutlinedInput-root"] {
+  background-color: #263141 !important; /* Lighter than background */
+  color: #e0e0e0 !important;
+}
+
+/* Input labels and placeholders */
+.MuiInputLabel-root,
+.MuiFormLabel-root,
+.MuiInputBase-input::placeholder {
+  color: #a0aec0 !important;
+}
+
+/* Dropdown selectors */
+.MuiSelect-select,
+.MuiSelect-outlined,
+div[class*="MuiSelect-root"] {
+  background-color: #263141 !important;
+  color: #e0e0e0 !important;
+}
+
+/* Border styling */
+.MuiOutlinedInput-notchedOutline,
+.MuiInput-underline::before,
+.MuiInput-underline::after {
+  border-color: #364759 !important;
+}
+
+/* Hover and focus states */
+.MuiInputBase-root:hover .MuiOutlinedInput-notchedOutline,
+.MuiInputBase-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: #0078ff !important;
+}
+
+/* Override any white backgrounds that might appear in other components */
+[class*="MuiAppBar-root"],
+[class*="MuiToolbar-root"],
+[class*="MuiAccordion-root"],
+[class*="MuiTableContainer-root"],
+[class*="MuiTableHead-root"],
+[class*="MuiTableBody-root"],
+[class*="MuiTableRow-root"],
+[class*="MuiTableCell-root"] {
+  background-color: #1e2a3a !important;
+  color: #e0e0e0 !important;
+}
+
+/* Dialog and modal backgrounds */
+.MuiDialog-paper,
+.MuiDrawer-paper,
+.MuiPopover-paper,
+.MuiMenu-paper {
+  background-color: #263141 !important;
+  color: #e0e0e0 !important;
+}
+
+/* Fix any buttons that might have white backgrounds */
+.MuiButton-root:not(.MuiButton-contained):not(.MuiButton-containedPrimary) {
+  background-color: #263141 !important;
+  color: #e0e0e0 !important;
+}
+
+/* Make sure all text is visible */
+.MuiTypography-root {
+  color: #e0e0e0 !important;
+}
+
+/* Adjust MenuItem background colors */
+.MuiMenuItem-root {
+  background-color: #263141 !important;
+  color: #e0e0e0 !important;
+}
+
+.MuiMenuItem-root:hover {
+  background-color: #2c3d52 !important;
+}
+
+/* Specifically target the problematic profile list container */
+[class*="MuiPaper-root"][class*="MuiCard-root"][class*="profile-list"],
+[class*="trainer-profiles"],
+.css-137kwej-MuiPaper-root-MuiCard-root,
+div.MuiPaper-root.MuiPaper-elevation.MuiPaper-rounded.MuiPaper-elevation1.MuiCard-root.profile-list,
+div.MuiCard-root.profile-list {
+  background-color: #1e2a3a !important;
+  border: 1px solid #364759 !important;
+  box-shadow: none !important;
+}
+
+/* Fix any inline background styles */
+div[style*="background-color"],
+div[style*="backgroundColor"] {
+  background-color: #1e2a3a !important;
+}
+
+/* Target the specific container from the screenshot */
+div.MuiPaper-root-MuiCard-root {
+  background-color: #1e2a3a !important;
+}
+
+/* Target any element with MuiPaper in the classname */
+[class*="MuiPaper"] {
+  background-color: #1e2a3a !important;
+} 

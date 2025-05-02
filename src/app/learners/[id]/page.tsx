@@ -1,9 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @next/next/no-img-element */
 "use client";  
 
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation'; 
-import { Typography, Card, CardContent, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
+import { Typography, Card, CardContent, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, CircularProgress } from '@mui/material';
 import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined';
 import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
@@ -14,20 +16,14 @@ import { ProtectedRoute } from '../../components/ProtectedRoute';
 import { useAuth } from '../../components/AuthContext';
 import axios from 'axios';
 
-
-const courses = [
-  { id: '1', title: 'Course 1', image: '/Image/anime1.jpg' },
-  { id: '2', title: 'Course 2', image: '/Image/anime1.jpg' }
-];
-
 interface Learner {
   id: string;
   name: string;
   image: string;
   description: string;
-  interests: string[];
+  interests: string[]; // This will now include both interests and stacks
   email: string; 
-  isActive: boolean; // Use isActive instead of isBlacklisted
+  isActive: boolean;
 }
 
 interface AdminProfile {
@@ -43,11 +39,14 @@ const LearnerDetail = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [adminProfile, setAdminProfile] = useState<AdminProfile | null>(null);
-  
   const router = useRouter();
   const [sidebarVisible, setSidebarVisible] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
   const [dialogAction, setDialogAction] = useState<'blacklist' | 'unblacklist' | null>(null);
+  const [imageSrc, setImageSrc] = useState<string | null>(null);
+  const [registeredCourses, setRegisteredCourses] = useState<any[]>([]);
+  const [isLoadingCourses, setIsLoadingCourses] = useState(true);
+  const [logoutDialogOpen, setLogoutDialogOpen] = useState(false);
 
   useEffect(() => {
     const fetchLearner = async () => {
@@ -75,14 +74,28 @@ const LearnerDetail = () => {
           
           if (user) {
             console.log('Found user with matching ID:', user);
+
+            // Fetch stacks data
+            const stacksResponse = await axios.get('http://143.198.197.240/api/stacks', {
+              headers: {
+                'Authorization': `Bearer ${token}`
+              }
+            });
+
+            const stacks = stacksResponse.data.data || [];
+            const userStacks = user.stacks?.map((stack: any) => {
+              const matchingStack = stacks.find((s: any) => s.id === stack.id);
+              return matchingStack ? matchingStack.tags : null;
+            }).filter((tag: string | null) => tag !== null) || [];
+
             const learner: Learner = {
               id: user.id || id,
               name: `${user.first_name || ''} ${user.last_name || ''}`.trim(),
-              image: user.profile_picture || '/Image/anime1.jpg',
+              image: user.profile_picture || '/Image/blank.jpg',
               description: user.description || 'No description available.',
-              interests: user.interests || [],
+              interests: [...(user.interests || []), ...userStacks], // Merge interests and stacks
               email: user.email || 'No email available',
-              isActive: user.is_active // Use is_active to set isActive
+              isActive: user.is_active
             };
             setLearner(learner);
           } else {
@@ -124,6 +137,106 @@ const LearnerDetail = () => {
 
     fetchAdminProfile();
   }, []);
+
+    useEffect(() => {
+      const fetchImage = async () => {
+        if (!learner?.image) return;
+  
+        try {
+          const response = await fetch(`http://143.198.197.240/api/${learner.image}`, {
+            headers: { Authorization: `Bearer ${localStorage.getItem('adminToken')}` }
+          });
+          if (!response.ok) throw new Error("Failed to fetch image");
+  
+          const blob = await response.blob();
+          const imageUrl = URL.createObjectURL(blob);
+          setImageSrc(imageUrl);
+        } catch (error) {
+          console.error("Error fetching image:", error);
+          setImageSrc("/Image/blank.jpg"); // Fallback image
+        }
+      };
+  
+      fetchImage();
+  
+      return () => {
+        if (imageSrc) URL.revokeObjectURL(imageSrc);
+      };
+    }, [learner?.image]);
+
+  const fetchCourseImage = async (thumbnail: string) => {
+    try {
+      const response = await fetch(`http://143.198.197.240/api/${thumbnail}`, {
+        headers: { Authorization: `Bearer ${localStorage.getItem('adminToken')}` }
+      });
+      if (!response.ok) throw new Error("Failed to fetch image");
+  
+      const blob = await response.blob();
+      return URL.createObjectURL(blob);
+    } catch (error) {
+      console.error("Error fetching image:", error);
+      return "/Image/blank.jpg"; // Fallback image
+    }
+  };
+
+  useEffect(() => {
+    const fetchRegisteredCourses = async () => {
+      setIsLoadingCourses(true);
+      const token = localStorage.getItem('adminToken');
+      if (!token) return;
+
+      try {
+        const registrationsResponse = await axios.get('http://143.198.197.240/api/registrations', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+
+        const coursesResponse = await axios.get('http://143.198.197.240/api/courses', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+
+        console.log('Registrations Response:', registrationsResponse.data);
+        console.log('Courses Response:', coursesResponse.data);
+
+        const registrationsData = registrationsResponse.data.data || registrationsResponse.data;
+        const coursesData = coursesResponse.data.data || coursesResponse.data;
+
+        if (Array.isArray(registrationsData) && Array.isArray(coursesData)) {
+          const userRegistrations = registrationsData.filter((registration: any) => {
+            console.log('Registration:', registration);
+            return registration.user_id == id; // Use loose equality to handle potential type differences
+          });
+          console.log('User Registrations:', userRegistrations);
+
+          const userCourses = await Promise.all(userRegistrations.map(async (registration: any) => {
+            const course = coursesData.find((course: any) => {
+              console.log('Course:', course);
+              return course.id === registration.course_id;
+            });
+            if (course) {
+              course.image = await fetchCourseImage(course.thumbnail);
+            }
+            console.log('Mapped Course:', course);
+            return course;
+          }).filter((course: any) => course !== undefined)); // Filter out undefined courses
+
+          console.log('User Courses:', userCourses);
+          setRegisteredCourses(userCourses);
+        } else {
+          console.error('Unexpected data structure:', { registrations: registrationsResponse.data, courses: coursesResponse.data });
+        }
+      } catch (error) {
+        console.error('Error fetching registered courses:', error);
+      } finally {
+        setIsLoadingCourses(false);
+      }
+    };
+
+    fetchRegisteredCourses();
+  }, [id]);
   
   const toggleSidebar = () => {
     setSidebarVisible(!sidebarVisible);
@@ -178,8 +291,41 @@ const LearnerDetail = () => {
     }
   };
 
+  const handleLogoutClick = () => {
+    setLogoutDialogOpen(true);
+  };
+
+  const handleLogoutConfirm = () => {
+    setLogoutDialogOpen(false);
+    logout();
+  };
+
+  const handleLogoutCancel = () => {
+    setLogoutDialogOpen(false);
+  };
+
+  useEffect(() => {
+    return () => {
+      // Reset state on unmount
+      setLearner(null);
+      setIsLoading(true);
+      setError(null);
+      setAdminProfile(null);
+      setSidebarVisible(false);
+      setOpenDialog(false);
+      setDialogAction(null);
+      setImageSrc(null);
+      setRegisteredCourses([]);
+      setIsLoadingCourses(true);
+    };
+  }, []);
+ 
   if (isLoading) {
-    return <Typography variant="h5">Loading...</Typography>;
+    return (
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+        <CircularProgress />
+      </div>
+    );
   }
 
   if (error) {
@@ -202,8 +348,18 @@ const LearnerDetail = () => {
         {/* Sidebar */}
         <div className={`sidebar ${sidebarVisible ? 'visible' : ''}`}>
           <div className="sidebar-header">  
-            <img src="/logo/170x100.png" alt="Logo" className="avatar" />
-            <Typography variant="h5" className="title">Dashboard</Typography>
+            {adminProfile ? (
+              <div className="admin-info">
+                <Typography variant="body2" className="admin-name">
+                  {adminProfile.first_name} {adminProfile.last_name}
+                </Typography>
+                <Typography variant="body2" className="admin-email">
+                  {adminProfile.email}
+                </Typography>
+              </div>
+            ) : (
+              <Typography variant="body2">Loading...</Typography>
+            )}
           </div>
 
           <nav className="sidebar-nav">
@@ -219,33 +375,12 @@ const LearnerDetail = () => {
               Learners
             </Button>
 
-            <Button variant="text" className="button" startIcon={<ExitToAppIcon />} onClick={logout}>
+            <Button variant="text" className="button" startIcon={<ExitToAppIcon />} onClick={handleLogoutClick}>
               Logout
             </Button>
           </nav>
           
-          {/* <div className="sidebar-support">
-            <Typography variant="subtitle1" className="support-title">Support</Typography>
-            {["Get Started", "Settings"].map((item) => (
-              <Button key={item} variant="text" className="button" startIcon={<BarChart />}>
-                {item}
-              </Button>
-            ))}
-          </div> */}
           <div className="sidebar-footer">
-            <img src="/logo/170x100.png" alt="Logo" className="adminavatar" />
-            {adminProfile ? (
-              <>
-                <Typography variant="body2" className="admin-name">
-                  {adminProfile.first_name} {adminProfile.last_name}
-                </Typography>
-                <Typography variant="body2" className="admin-email">
-                  {adminProfile.email}
-                </Typography>
-              </>
-            ) : (
-              <Typography variant="body2" className="footer-text">Loading...</Typography>
-            )}
             <Typography variant="body2" className="footer-text2">© 2025 Company Name</Typography>
             <Typography variant="body2" className="footer-text2">Created by the FlappyBords CodeBol-anon team</Typography>
           </div>
@@ -260,7 +395,7 @@ const LearnerDetail = () => {
           <Card className="learner-card">
             <CardContent className="learner-card-content">
               <div className="learner-profile">
-                <img src={learner.image} alt={learner.name} className="learner-image" />
+              <img src={imageSrc || "/Image/anime2.jpg"} alt={learner.name} className="learner-image" />
                 <Typography variant="h4" className="learner-name">{learner.name}</Typography>
                 <Typography variant="body1" className="learner-email">{learner.email}</Typography>
                 <Button
@@ -284,10 +419,6 @@ const LearnerDetail = () => {
           </Card>
 
           <div className="content-boxes">
-            {/* <div className="learner-description-box">
-              <Typography variant="h5" className="description-title">Description</Typography>
-              <Typography variant="body1" className="description-content">{learner.description}</Typography>
-            </div> */}
             <div className="learner-interests-box">
               <Typography variant="h5" className="interests-title">Interests</Typography>
               <ul className="interests-list">
@@ -301,39 +432,69 @@ const LearnerDetail = () => {
           <div className="course-lists">
             <Typography variant="h5" className="courses-title">Courses Enrolled</Typography>
             <div className="courses-container">
-              {courses.map((course) => (
-                <div key={course.id} className="course" onClick={() => navigateToCourse(course.id)}>
-                  <div className="course-header">
-                    <img src={course.image} alt={course.title} className="course-image" />
-                    <Typography variant="h6" className="course-title">{course.title}</Typography>
-                  </div>
-                  {/* <Typography variant="body2" className="course-progress-text">{`Progress: ${course.progress}%`}</Typography>
-                  <LinearProgress variant="determinate" value={course.progress} /> */}
+              {isLoadingCourses ? (
+                <div style={{ textAlign: 'center', padding: '2rem' }}>
+                  <CircularProgress />
+                  <Typography variant="body1" style={{ marginTop: '1rem' }}>Loading courses...</Typography>
                 </div>
-              ))}
+              ) : (
+                registeredCourses.map((course) => (
+                  <div key={course.id} className="course" onClick={() => navigateToCourse(course.id)}>
+                    <div className="course-header">
+                      <img src={course.image} alt={course.title} className="course-image" />
+                      <div className="course-info">
+                        <Typography variant="h6" className="course-title">{course.title}</Typography>
+                      </div>
+                    </div>
+                  </div>
+                ))
+              )}
             </div>
           </div>
         </div>
+
+        {/* Blacklist/Unblacklist Dialog */}
+        <Dialog
+          open={openDialog}
+          onClose={handleDialogClose}
+        >
+          <DialogTitle>{dialogAction === 'blacklist' ? 'Blacklist Learner' : 'Unblacklist Learner'}</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              Are you sure you want to {dialogAction} this learner?
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleDialogClose} color="primary">
+              Cancel
+            </Button>
+            <Button onClick={handleConfirmAction} color="primary">
+              Confirm
+            </Button>
+          </DialogActions>
+        </Dialog>
+
+        {/* Logout Confirmation Dialog */}
+        <Dialog
+          open={logoutDialogOpen}
+          onClose={handleLogoutCancel}
+        >
+          <DialogTitle>Confirm Logout</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              Are you sure you want to logout?
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleLogoutCancel} color="primary">
+              Cancel
+            </Button>
+            <Button onClick={handleLogoutConfirm} color="primary">
+              Logout
+            </Button>
+          </DialogActions>
+        </Dialog>
       </div>
-      <Dialog
-        open={openDialog}
-        onClose={handleDialogClose}
-      >
-        <DialogTitle>{dialogAction === 'blacklist' ? 'Blacklist Learner' : 'Unblacklist Learner'}</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            Are you sure you want to {dialogAction} this learner?
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleDialogClose} color="primary">
-            Cancel
-          </Button>
-          <Button onClick={handleConfirmAction} color="primary">
-            Confirm
-          </Button>
-        </DialogActions>
-      </Dialog>
     </ProtectedRoute>
   );
 };

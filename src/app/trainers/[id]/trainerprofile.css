@@ -1,25 +1,32 @@
 .dashboard-container {
     display: flex;
     min-height: 100vh;
+    background-color: #1e2a3a; /* Dark blue-gray background */
   }
   
   /* Sidebar */
   
   .sidebar {
     width: 16rem; 
-    background-color: var(--sidebar-background);
     padding: 1rem; 
     display: flex;
     flex-direction: column;
     gap: 1.5rem; 
-    border: 1px solid #ccc;
+    border: 1px solid #2c3e50;
+    background-color: #263141; /* Slightly lighter than main background */
   }
   
   .sidebar-header {
     display: flex;
-    align-items: center;
-    gap: 0.75rem; 
-    padding: 0.5rem; 
+    padding: 1rem;
+    border-bottom: 1px solid #364759;
+    margin-bottom: 1rem;
+  }
+
+  .sidebar-header .admin-info {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
   }
   
   .sidebar-header .avatar {
@@ -32,6 +39,7 @@
   .sidebar-header .title {
     font-size: 1.125rem; 
     font-weight: 600; 
+    color: #e0e0e0;
   }
   
   .sidebar-nav {
@@ -45,11 +53,12 @@
     justify-content: start;
     gap: 0.75rem;
     width: 100%;
+    color: #e0e0e0;
   }
   
   .sidebar-nav .button.active {
-    background-color: #ebf8ff; 
-    color: #3b82f6; 
+    background-color: #0078ff; 
+    color: #ffffff; 
   }
   
   .sidebar-support {
@@ -60,7 +69,7 @@
     padding: 1rem;
     font-size: 0.875rem; 
     font-weight: 500; 
-    color: #6b7280; 
+    color: #a0aec0; 
   }
   
   .sidebar-footer {
@@ -68,7 +77,7 @@
     padding: 1rem;
     text-align: center;
     font-size: 0.875rem;
-    color: #6b7280;
+    color: #a0aec0;
     display: flex;
     flex-direction: column;
     align-items: center; 
@@ -86,19 +95,20 @@
   .sidebar-footer .admin-name {
     font-size: 1rem;
     font-weight: 600;
-    color: #374151;
+    color: #e0e0e0;
     margin: 0;
   }
   
   .sidebar-footer .admin-email {
     font-size: 0.875rem;
-    color: #6b7280;
+    color: #a0aec0;
     margin: 0;
   }
   
   .sidebar-footer .footer-text {
     font-size: 0.875rem; 
     font-weight: 500; 
+    color: #a0aec0;
   }
   
   
@@ -108,6 +118,8 @@
   .main-content {
     flex: 1;
     padding: 2rem;
+    background-color: #1e2a3a;
+    color: #e0e0e0;
   }
   
   .main-content .header {
@@ -115,28 +127,34 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 2rem; 
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #364759;
   }
   
   .main-content .header .title {
     font-size: 1.5rem; 
     font-weight: 900; 
+    color: #e0e0e0;
   }
   
   
   /* Trainer */
   
   .main-content .title {
-    color: #303030;
+    color: #e0e0e0;
   }
 
   .trainer-profile {
     display: flex;
     align-items: center;
     gap: 1rem;
-    border: 1px solid #000;
+    border: 1px solid #364759;
     padding: 1rem;
     border-radius: 8px;
     flex: 1 1 calc(33.333% - 2rem); 
+    background-color: #263141;
+    color: #e0e0e0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   } 
   
   .trainer-profile .trainer-image {
@@ -144,36 +162,43 @@
     height: 150px;
     border-radius: 50%;
     object-fit: cover;
+    border: 2px solid #364759;
   }
 
   .trainer-description-box {
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    border: 1px solid #000;
+    border: 1px solid #364759;
     padding: 1rem;
     border-radius: 8px;
     margin-top: 1rem;
+    background-color: #263141;
+    color: #e0e0e0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   }
 
   .trainer-description-box .description-title {
     font-size: 1.25rem;
     font-weight: 700;
+    color: #e0e0e0;
   }
 
   .trainer-description-box .description-content {
     font-size: 1rem;
-    color: #303030;
+    color: #a0aec0;
   }
 
   .trainer-description-box .organization-title {
     font-size: 1.25rem;
     font-weight: 700;
+    color: #e0e0e0;
   }
 
   .trainer-description-box .specialization-title {
     font-size: 1.25rem;
     font-weight: 700;
+    color: #e0e0e0;
   }
 
   .content-boxes {
@@ -186,20 +211,24 @@
   .trainer-description-box, .trainer-expertise-box {
     width: 48%;
     flex-grow: 1;
-    border: 1px solid #000;
+    border: 1px solid #364759;
     padding: 1rem;
     border-radius: 5px;
     margin-top: 1rem;
+    background-color: #263141;
+    color: #e0e0e0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   }
 
   .trainer-expertise-box .expertise-title {
     font-size: 1.25rem;
     font-weight: 700;  
+    color: #e0e0e0;
   }
 
   .expertise-list {
     list-style-type: none;
-    padding-left: 0;
+    color: #a0aec0;
   }
 
   .content-boxes .expertise-item {
@@ -207,13 +236,14 @@
     padding: 10px;
     border-radius: 5px;
     position: relative;
+    color: #a0aec0;
   }
 
   .content-boxes .expertise-item::before {
     content: "•";
     position: absolute;
     left: -2px;
-    color: #333;
+    color: #a0aec0;
   }
 
   .course-lists {
@@ -221,10 +251,12 @@
     flex-direction: column;
     justify-content: flex-end;
     gap: 2rem;
-    border: 1px solid #000;
+    border: 1px solid #364759;
     padding: 2rem;
     border-radius: 8px;
     margin-top: 2rem;
+    background-color: #263141;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   }
 
   .courses-container {
@@ -234,43 +266,75 @@
   }
   
   .course {
-    border: 1px solid #000000; 
+    border: 1px solid #364759; 
     border-radius: 15px; 
     padding: 16px;
-    background-color: #fff; 
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: #2c3d52;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     transition: transform 0.2s;
     cursor: pointer;  
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    color: #e0e0e0;
   }
 
   .course:hover {
     transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
   }
   
   .course-header {
     display: flex;
     align-items: center;
+    gap: 1rem;
   }
   
+  .course-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
   .course-image {
     width: 120px;
     height: 120px;
     margin-right: 10px;
-    border-radius: 4px;
+    border-radius: 8px;
+    object-fit: cover;
+    border: 1px solid #364759;
   }
   
   .course-title {
     font-size: 1.25rem;
     font-weight: 700;
-    color: #4d4e52;
+    color: #e0e0e0;
+    margin: 0;
   }
-  
+
+  .course-rating {
+    color: #a0aec0;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  .course .MuiLinearProgress-root {
+    margin-top: 1rem;
+  }
+
+  .course .course-progress-text {
+    margin-top: 0.5rem;
+    font-size: 0.875rem;
+    color: #a0aec0;
+  }
+
   .courses-title {
     margin-top: 2rem;
     margin-bottom: 1rem;
     font-size: 1.5rem;
     font-weight: 700;
-    color: #4d4e52;
+    color: #e0e0e0;
   }
 
   /* Burger Reactive elements */
@@ -284,7 +348,7 @@
 .burger-menu div {
   width: 25px;
   height: 3px;
-  background-color: #333;
+  background-color: #e0e0e0;
   margin: 5px 0;
   transition: 0.4s;
 }

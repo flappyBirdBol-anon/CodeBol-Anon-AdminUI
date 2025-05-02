@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import ProfileList from '../components/ProfileList';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
+import { CircularProgress } from '@mui/material';
 
 // Define interface for trainer data
 interface Trainer {
@@ -10,6 +11,7 @@ interface Trainer {
   name: string;
   image: string;
   email: string; 
+  isActive: boolean; // Add this line
 }
 
 const TrainersProfileList = () => {
@@ -38,38 +40,57 @@ const TrainersProfileList = () => {
         });
 
         if (response.data && response.data.data) {
-          const trainers = response.data.data
+          const trainers = await Promise.all(response.data.data
             .filter((user: any) => user.role === 'trainer')
-            .map((user: any, index: number) => ({
-              id: user.id || `user-${index}`, // Fallback to index if id is missing or duplicate
-              name: `${user.first_name || ''} ${user.last_name || ''}`.trim(), // Handle missing name parts
-              image: user.profile_picture || '/Image/anime1.jpg',
-              email: user.email || 'No email available'
+            .map(async (user: any, index: number) => {
+              let imageUrl = user.profile_picture || '/Image/blank.jpg';
+              if (user.profile_picture) {
+                try {
+                  const imageResponse = await fetch(`http://143.198.197.240/api/${user.profile_picture}`, {
+                    headers: { Authorization: `Bearer ${token}` }
+                  });
+                  if (imageResponse.ok) {
+                    const blob = await imageResponse.blob();
+                    imageUrl = URL.createObjectURL(blob);
+                  }
+                } catch (error) {
+                  console.error('Error fetching image:', error);
+                }
+              }
+              return {
+                id: user.id || `user-${index}`, // Fallback to index if id is missing or duplicate
+                name: `${user.first_name || ''} ${user.last_name || ''}`.trim(), // Handle missing name parts
+                image: imageUrl,
+                email: user.email || 'No email available',
+                isActive: user.is_active // Add this line
+              };
             }));
-            console.log('Mapped trainers with IDs:', trainers);
-            setTrainers(trainers);
-          } else {
-            setError('Invalid data structure received from API');
-          }
-        } catch (error) {
-          console.error('Error fetching trainers:', error);
-          setError('Failed to fetch trainers. Please try again later.');
-        } finally {
-          setIsLoading(false);
+          console.log('Mapped trainers with IDs:', trainers);
+          setTrainers(trainers);
+        } else {
+          setError('Invalid data structure received from API');
         }
-      };
-  
-      fetchTrainers();
-    }, []);
+      } catch (error) {
+        console.error('Error fetching trainers:', error);
+        setError('Failed to fetch trainers. Please try again later.');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchTrainers();
+  }, []);
 
   const handleProfileClick = (id: string) => {
     router.push(`/trainers/${id}`);
   };
 
   return (
-    <div>
+    <div style={{ padding: 0, margin: 0 }}>
       {isLoading ? (
-        <div>Loading...</div>
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '200px' }}>
+          <CircularProgress />
+        </div>
       ) : error ? (
         <div>{error}</div>
       ) : (

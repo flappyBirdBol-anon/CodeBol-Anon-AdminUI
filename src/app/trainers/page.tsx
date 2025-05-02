@@ -1,7 +1,5 @@
-/* eslint-disable @next/next/no-img-element */
 "use client"
-import { Download } from "lucide-react"
-import { Button, Typography } from '@mui/material'
+import { Button, Typography, CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material'
 import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined';
 import PersonIcon from '@mui/icons-material/Person';
 import GroupOutlinedIcon from '@mui/icons-material/GroupOutlined';
@@ -37,6 +35,8 @@ const TrainersPage = () => {
   const router = useRouter();
   const [sidebarVisible, setSidebarVisible] = useState(false);
   const [adminProfile, setAdminProfile] = useState<AdminProfile | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [logoutDialogOpen, setLogoutDialogOpen] = useState(false);
 
   const toggleSidebar = () => {
     setSidebarVisible(!sidebarVisible);
@@ -44,6 +44,19 @@ const TrainersPage = () => {
 
   const navigateTo = (path: string) => {
     router.push(path);
+  };
+
+  const handleLogoutClick = () => {
+    setLogoutDialogOpen(true);
+  };
+
+  const handleLogoutConfirm = () => {
+    setLogoutDialogOpen(false);
+    logout();
+  };
+
+  const handleLogoutCancel = () => {
+    setLogoutDialogOpen(false);
   };
 
   useEffect(() => {
@@ -62,12 +75,25 @@ const TrainersPage = () => {
           setAdminProfile(response.data.data);
         }
       } catch (error) {
-        console.error('Error fetching admin profile:', error);
+        if (axios.isAxiosError(error)) {
+          console.error('Axios error fetching admin profile:', error.response?.data || error.message);
+        } else {
+          console.error('Unexpected error fetching admin profile:', error);
+        }
       }
+      setIsLoading(false);
     };
 
     fetchAdminProfile();
   }, []);
+
+  if (isLoading) {
+    return (
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+        <CircularProgress />
+      </div>
+    );
+  }
 
   return (
     <ProtectedRoute>
@@ -81,8 +107,18 @@ const TrainersPage = () => {
         {/* Sidebar */}
         <div className={`sidebar ${sidebarVisible ? 'visible' : ''}`}>
           <div className="sidebar-header">  
-            <img src="/logo/170x100.png" alt="Logo" className="avatar" />
-            <Typography variant="h5" className="title">Dashboard</Typography>
+            {adminProfile ? (
+              <div className="admin-info">
+                <Typography variant="body2" className="admin-name">
+                  {adminProfile.first_name} {adminProfile.last_name}
+                </Typography>
+                <Typography variant="body2" className="admin-email">
+                  {adminProfile.email}
+                </Typography>
+              </div>
+            ) : (
+              <Typography variant="body2">Loading...</Typography>
+            )}
           </div>
 
           <nav className="sidebar-nav">
@@ -98,7 +134,7 @@ const TrainersPage = () => {
               Learners
             </Button>
 
-            <Button variant="text" className="button" startIcon={<ExitToAppIcon />} onClick={logout}>
+            <Button variant="text" className="button" startIcon={<ExitToAppIcon />} onClick={handleLogoutClick}>
               Logout
             </Button>
           </nav>
@@ -112,19 +148,6 @@ const TrainersPage = () => {
             ))}
           </div> */}
           <div className="sidebar-footer">
-            <img src="/logo/170x100.png" alt="Logo" className="adminavatar" />
-            {adminProfile ? (
-              <>
-                <Typography variant="body2" className="admin-name">
-                  {adminProfile.first_name} {adminProfile.last_name}
-                </Typography>
-                <Typography variant="body2" className="admin-email">
-                  {adminProfile.email}
-                </Typography>
-              </>
-            ) : (
-              <Typography variant="body2" className="footer-text">Loading...</Typography>
-            )}
             <Typography variant="body2" className="footer-text2">© 2025 Company Name</Typography>
             <Typography variant="body2" className="footer-text2">Created by the FlappyBords CodeBol-anon team</Typography>
           </div>
@@ -134,9 +157,6 @@ const TrainersPage = () => {
         <div className="main-content">
           <div className="header">
             <Typography variant="h4" className="title">Trainer Page</Typography>
-            <Button variant="outlined" className="button" startIcon={<Download />}>
-              Download
-            </Button>
           </div>  
 
           {/* Trainer Profiles */}
@@ -144,6 +164,27 @@ const TrainersPage = () => {
           <TrainerProfileList />
           </div>
         </div>
+        
+        {/* Logout Confirmation Dialog */}
+        <Dialog
+          open={logoutDialogOpen}
+          onClose={handleLogoutCancel}
+        >
+          <DialogTitle>Confirm Logout</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              Are you sure you want to logout?
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleLogoutCancel} color="primary">
+              Cancel
+            </Button>
+            <Button onClick={handleLogoutConfirm} color="primary">
+              Logout
+            </Button>
+          </DialogActions>
+        </Dialog>
       </div>
     </ProtectedRoute>
   )

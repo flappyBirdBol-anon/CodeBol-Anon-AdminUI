@@ -1,7 +1,5 @@
-/* eslint-disable @next/next/no-img-element */
 "use client"
-import { Download } from "lucide-react"
-import { Button, Typography } from '@mui/material'
+import { Button, CircularProgress, Typography, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material'
 import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined';
 import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined';
 import GroupIcon from '@mui/icons-material/Group';
@@ -28,6 +26,8 @@ const LearnersPage = () => {
   const router = useRouter();
   const [sidebarVisible, setSidebarVisible] = useState(false);
   const [adminProfile, setAdminProfile] = useState<AdminProfile | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [logoutDialogOpen, setLogoutDialogOpen] = useState(false);
 
   const toggleSidebar = () => {
     setSidebarVisible(!sidebarVisible);
@@ -35,6 +35,19 @@ const LearnersPage = () => {
 
   const navigateTo = (path: string) => {
     router.push(path);
+  };
+
+  const handleLogoutClick = () => {
+    setLogoutDialogOpen(true);
+  };
+
+  const handleLogoutConfirm = () => {
+    setLogoutDialogOpen(false);
+    logout();
+  };
+
+  const handleLogoutCancel = () => {
+    setLogoutDialogOpen(false);
   };
 
   useEffect(() => {
@@ -59,10 +72,19 @@ const LearnersPage = () => {
           console.error('Unexpected error fetching admin profile:', error);
         }
       }
+      setIsLoading(false);
     };
 
     fetchAdminProfile();
   }, []);
+
+  if (isLoading) {
+    return (
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+        <CircularProgress />
+      </div>
+    );
+  }
 
   return (
     <ProtectedRoute>
@@ -76,8 +98,18 @@ const LearnersPage = () => {
         {/* Sidebar */}
         <div className={`sidebar ${sidebarVisible ? 'visible' : ''}`}>
           <div className="sidebar-header">
-            <img src="/logo/170x100.png" alt="Logo" className="avatar" />
-            <Typography variant="h5" className="title">Dashboard</Typography>
+            {adminProfile ? (
+              <div className="admin-info">
+                <Typography variant="body2" className="admin-name">
+                  {adminProfile.first_name} {adminProfile.last_name}
+                </Typography>
+                <Typography variant="body2" className="admin-email">
+                  {adminProfile.email}
+                </Typography>
+              </div>
+            ) : (
+              <Typography variant="body2">Loading...</Typography>
+            )}
           </div>
 
           <nav className="sidebar-nav">
@@ -93,25 +125,12 @@ const LearnersPage = () => {
               Learners
             </Button>
 
-            <Button variant="text" className="button" startIcon={<ExitToAppIcon />} onClick={logout}>
+            <Button variant="text" className="button" startIcon={<ExitToAppIcon />} onClick={handleLogoutClick}>
               Logout
             </Button>
           </nav>
 
           <div className="sidebar-footer">
-            <img src="/logo/170x100.png" alt="Logo" className="adminavatar" />
-            {adminProfile ? (
-              <>
-                <Typography variant="body2" className="admin-name">
-                  {adminProfile.first_name} {adminProfile.last_name}
-                </Typography>
-                <Typography variant="body2" className="admin-email">
-                  {adminProfile.email}
-                </Typography>
-              </>
-            ) : (
-              <Typography variant="body2" className="footer-text">Loading...</Typography>
-            )}
             <Typography variant="body2" className="footer-text2">© 2025 Company Name</Typography>
             <Typography variant="body2" className="footer-text2">Created by the FlappyBords CodeBol-anon team</Typography>
           </div>
@@ -121,9 +140,6 @@ const LearnersPage = () => {
         <div className="main-content">
           <div className="header">
             <Typography variant="h4" className="title">Learners Page</Typography>
-            <Button variant="outlined" className="button" startIcon={<Download />}>
-              Download
-            </Button>
           </div>
 
           {/* Learner Profiles */}
@@ -131,6 +147,27 @@ const LearnersPage = () => {
             <LearnerProfileList />
           </div>
         </div>
+        
+        {/* Logout Confirmation Dialog */}
+        <Dialog
+          open={logoutDialogOpen}
+          onClose={handleLogoutCancel}
+        >
+          <DialogTitle>Confirm Logout</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              Are you sure you want to logout?
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleLogoutCancel} color="primary">
+              Cancel
+            </Button>
+            <Button onClick={handleLogoutConfirm} color="primary">
+              Logout
+            </Button>
+          </DialogActions>
+        </Dialog>
       </div>
     </ProtectedRoute>
   )

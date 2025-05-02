@@ -1,6 +1,7 @@
 "use client";
 
 import '@/app/globals.css'
+import '@/app/components/dark-theme-override.css'
 import { Inter } from 'next/font/google'
 import './courses/[id]/courseDetail.css'
 import { AuthProvider } from './components/AuthContext';
