@@ -119,16 +119,16 @@ const DashboardPage = () => {
 
       try {
         const [coursesResponse, registrationsResponse, usersResponse, stacksResponse] = await Promise.all([
-          axios.get('http://143.198.197.240/api/courses', {
+          axios.get('https://codebolanon.commesr.io/api/courses', {
             headers: { 'Authorization': `Bearer ${token}` }
           }),
-          axios.get('http://143.198.197.240/api/registrations', {
+          axios.get('https://codebolanon.commesr.io/api/registrations', {
             headers: { 'Authorization': `Bearer ${token}` }
           }),
-          axios.get('http://143.198.197.240/api/users', {
+          axios.get('https://codebolanon.commesr.io/api/users', {
             headers: { 'Authorization': `Bearer ${token}` }
           }),
-          axios.get('http://143.198.197.240/api/stacks', {
+          axios.get('https://codebolanon.commesr.io/api/stacks', {
             headers: { 'Authorization': `Bearer ${token}` }
           })
         ]);
@@ -308,7 +308,7 @@ const DashboardPage = () => {
       if (!token) return;
 
       try {
-        const response = await axios.get('http://143.198.197.240/api/profile/me', {
+        const response = await axios.get('https://codebolanon.commesr.io/api/profile/me', {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -331,7 +331,7 @@ const DashboardPage = () => {
       if (!token) return;
 
       try {
-        const response = await axios.get('http://143.198.197.240/api/users', {
+        const response = await axios.get('https://codebolanon.commesr.io/api/users', {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -361,7 +361,7 @@ const DashboardPage = () => {
       }
 
       try {
-        const response = await axios.get('http://143.198.197.240/api/transactions', {
+        const response = await axios.get('https://codebolanon.commesr.io/api/transactions', {
           headers: {
             'Authorization': `Bearer ${token}`
           }

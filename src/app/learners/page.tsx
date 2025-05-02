@@ -56,7 +56,7 @@ const LearnersPage = () => {
       if (!token) return;
 
       try {
-        const response = await axios.get('http://143.198.197.240/api/profile/me', {
+        const response = await axios.get('https://codebolanon.commesr.io/api/profile/me', {
           headers: {
             'Authorization': `Bearer ${token}`
           }

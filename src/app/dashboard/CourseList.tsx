@@ -69,7 +69,7 @@ const CourseItem = ({ course, onCourseClick }: { course: CourseItem; onCourseCli
 
     const fetchImage = async () => {
       try {
-        const response = await fetch(`http://143.198.197.240/api/${course.thumbnail}`, {
+        const response = await fetch(`https://codebolanon.commesr.io/api/${course.thumbnail}`, {
           headers: { Authorization: `bearer ${localStorage.getItem("adminToken")}` },
         });
         if (!response.ok) throw new Error("Failed to fetch image");

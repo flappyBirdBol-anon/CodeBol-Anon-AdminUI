@@ -41,7 +41,7 @@ const CourseDetail = () => {
       }
 
       try {
-        const response = await axios.get(`http://143.198.197.240/api/courses/${id}`, {
+        const response = await axios.get(`https://codebolanon.commesr.io/api/courses/${id}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -67,7 +67,7 @@ const CourseDetail = () => {
       setIsLoadingComments(true); // Set loading state to true
 
       try {
-        const response = await axios.get('http://143.198.197.240/api/registrations', {
+        const response = await axios.get('https://codebolanon.commesr.io/api/registrations', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -84,7 +84,7 @@ const CourseDetail = () => {
           // Fetch user details and profile pictures as blobs
           const userPromises = courseComments.map(async (comment: any) => {
             try {
-              const userResponse = await axios.get(`http://143.198.197.240/api/users/${comment.user_id}`, {
+              const userResponse = await axios.get(`https://codebolanon.commesr.io/api/users/${comment.user_id}`, {
                 headers: {
                   Authorization: `Bearer ${token}`, 
                 },
@@ -95,7 +95,7 @@ const CourseDetail = () => {
                 // Fetch user profile picture as a blob
                 if (user.profile_picture) {
                   try {
-                    const imageResponse = await fetch(`http://143.198.197.240/api/${user.profile_picture}`, {
+                    const imageResponse = await fetch(`https://codebolanon.commesr.io/api/${user.profile_picture}`, {
                       headers: { Authorization: `Bearer ${token}` },
                     });
                     if (imageResponse.ok) {
@@ -135,7 +135,7 @@ const CourseDetail = () => {
       if (!token) return;
 
       try {
-        const response = await axios.get('http://143.198.197.240/api/profile/me', {
+        const response = await axios.get('https://codebolanon.commesr.io/api/profile/me', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -159,7 +159,7 @@ const CourseDetail = () => {
       if (!course?.thumbnail) return;
 
       try {
-        const response = await fetch(`http://143.198.197.240/api/${course.thumbnail}`, {
+        const response = await fetch(`https://codebolanon.commesr.io/api/${course.thumbnail}`, {
           headers: { Authorization: `Bearer ${localStorage.getItem('adminToken')}` },
         });
         if (!response.ok) throw new Error('Failed to fetch image');

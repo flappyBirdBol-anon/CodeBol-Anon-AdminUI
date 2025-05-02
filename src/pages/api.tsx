@@ -20,7 +20,7 @@ export async function GET(request: NextRequest) {
     }
     
     // Construct the full URL
-    const baseUrl = 'http://143.198.197.240/api/';
+    const baseUrl = 'https://codebolanon.commesr.io/api/';
     const fullUrl = path.startsWith('http') ? path : `${baseUrl}${path}`;
     
     console.log(`Fetching image from: ${fullUrl}`);

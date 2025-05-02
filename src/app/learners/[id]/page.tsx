@@ -63,7 +63,7 @@ const LearnerDetail = () => {
       try {
         console.log(`Fetching learner with ID: ${id}`);
         
-        const response = await axios.get(`http://143.198.197.240/api/users/${id}`, {
+        const response = await axios.get(`https://codebolanon.commesr.io/api/users/${id}`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -76,7 +76,7 @@ const LearnerDetail = () => {
             console.log('Found user with matching ID:', user);
 
             // Fetch stacks data
-            const stacksResponse = await axios.get('http://143.198.197.240/api/stacks', {
+            const stacksResponse = await axios.get('https://codebolanon.commesr.io/api/stacks', {
               headers: {
                 'Authorization': `Bearer ${token}`
               }
@@ -121,7 +121,7 @@ const LearnerDetail = () => {
       if (!token) return;
 
       try {
-        const response = await axios.get('http://143.198.197.240/api/profile/me', {
+        const response = await axios.get('https://codebolanon.commesr.io/api/profile/me', {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -143,7 +143,7 @@ const LearnerDetail = () => {
         if (!learner?.image) return;
   
         try {
-          const response = await fetch(`http://143.198.197.240/api/${learner.image}`, {
+          const response = await fetch(`https://codebolanon.commesr.io/api/${learner.image}`, {
             headers: { Authorization: `Bearer ${localStorage.getItem('adminToken')}` }
           });
           if (!response.ok) throw new Error("Failed to fetch image");
@@ -166,7 +166,7 @@ const LearnerDetail = () => {
 
   const fetchCourseImage = async (thumbnail: string) => {
     try {
-      const response = await fetch(`http://143.198.197.240/api/${thumbnail}`, {
+      const response = await fetch(`https://codebolanon.commesr.io/api/${thumbnail}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('adminToken')}` }
       });
       if (!response.ok) throw new Error("Failed to fetch image");
@@ -186,13 +186,13 @@ const LearnerDetail = () => {
       if (!token) return;
 
       try {
-        const registrationsResponse = await axios.get('http://143.198.197.240/api/registrations', {
+        const registrationsResponse = await axios.get('https://codebolanon.commesr.io/api/registrations', {
           headers: {
             'Authorization': `Bearer ${token}`
           }
         });
 
-        const coursesResponse = await axios.get('http://143.198.197.240/api/courses', {
+        const coursesResponse = await axios.get('https://codebolanon.commesr.io/api/courses', {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -267,7 +267,7 @@ const LearnerDetail = () => {
 
     try {
       if (dialogAction === 'blacklist') {
-        await axios.put(`http://143.198.197.240/api/blacklist/${id}`, {}, {
+        await axios.put(`https://codebolanon.commesr.io/api/blacklist/${id}`, {}, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -275,7 +275,7 @@ const LearnerDetail = () => {
         alert('Learner has been blacklisted.');
         setLearner((prevLearner) => prevLearner ? { ...prevLearner, isActive: false } : prevLearner);
       } else if (dialogAction === 'unblacklist') {
-        await axios.put(`http://143.198.197.240/api/unblacklist/${id}`, {}, {
+        await axios.put(`https://codebolanon.commesr.io/api/unblacklist/${id}`, {}, {
           headers: {
             'Authorization': `Bearer ${token}`
           }

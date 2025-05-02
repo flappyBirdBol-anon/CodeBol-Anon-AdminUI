@@ -33,7 +33,7 @@ const TrainersProfileList = () => {
       }
 
       try {
-        const response = await axios.get('http://143.198.197.240/api/users', {
+        const response = await axios.get('https://codebolanon.commesr.io/api/users', {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -46,7 +46,7 @@ const TrainersProfileList = () => {
               let imageUrl = user.profile_picture || '/Image/blank.jpg';
               if (user.profile_picture) {
                 try {
-                  const imageResponse = await fetch(`http://143.198.197.240/api/${user.profile_picture}`, {
+                  const imageResponse = await fetch(`https://codebolanon.commesr.io/api/${user.profile_picture}`, {
                     headers: { Authorization: `Bearer ${token}` }
                   });
                   if (imageResponse.ok) {

@@ -15,7 +15,7 @@ export async function GET(request: NextRequest) {
 
   try {
     // Base URL for your API
-    const baseUrl = 'http://143.198.197.240/api/';
+    const baseUrl = 'https://codebolanon.commesr.io/api/';
     
     // Full image URL
     const imageUrl = path.startsWith('http') ? path : `${baseUrl}${path}`;

@@ -20,7 +20,7 @@ const LoginPage = () => {
     const password = (document.getElementById('password') as HTMLInputElement).value;
   
     try {
-      const response = await axios.post('http://143.198.197.240/api/login', {
+      const response = await axios.post('https://codebolanon.commesr.io/api/login', {
         email,
         password,
         platform: 'web',
