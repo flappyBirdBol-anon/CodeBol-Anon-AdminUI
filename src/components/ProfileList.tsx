@@ -1,5 +1,6 @@
 import React from 'react';
 import { Card, CardContent, Typography } from '@mui/material';
+import Image from 'next/image';
 
 // Define interface for profile data
 interface Profile {
@@ -22,7 +23,7 @@ const ProfileList: React.FC<ProfileListProps> = ({ profiles, title, onProfileCli
         {profiles.map((profile) => (
           <Card key={profile.id} className="profile-card" onClick={() => onProfileClick(profile.id)}>
             <CardContent>
-              <img src={profile.image} alt={profile.name} className="profile-image" />
+              <Image src={profile.image} alt={profile.name} className="profile-image" />
               <Typography variant="h5">{profile.name}</Typography>
             </CardContent>
           </Card>
