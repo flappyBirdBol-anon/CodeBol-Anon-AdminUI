@@ -28,12 +28,12 @@
   }
   
   .login-container .login-title {
-    margin-bottom: 16px;
+    margin-bottom: 24px;
     color: #e0e0e0;
   }
   
   .login-container .login-textfield {
-    margin-bottom: 16px;
+    margin-bottom: 24px;
     width: 100%;
   }
 
@@ -62,18 +62,19 @@
   
   .login-container .login-link {
     display: block;
-    margin-bottom: 16px;
+    margin-top: 5px;
+    margin-bottom: 24px;
     color: #0078ff;
   }
   
   .login-container .login-button {
-    margin-bottom: 16px;
+    margin-bottom: 24px;
     background-color: #0078ff;
     color: white;
   }
 
   .login-container .login-button:hover {
-    background-color: #0056b3;
+    background-color: #006adb;
   }
 
   .login-box.error {
@@ -86,5 +87,18 @@
 
   .error-message {
     margin-top: 10px;
-    color: #e53e3e;
+    margin-bottom: 12px;
+    color: #ff0000 !important; /* Bright red with !important flag */
+    font-weight: bold; /* Make it stand out more */
+  }
+
+  /* Additional selector for MUI Typography component */
+  .MuiTypography-root.error-message {
+    color: #ff0000 !important;
+  }
+
+  /* Target the exact class structure seen in the DOM */
+  p.MuiTypography-root.MuiTypography-body2.error-message {
+    color: #ff0000 !important;
+    margin-bottom: 12px !important;
   }
