@@ -64,17 +64,17 @@
     display: block;
     margin-top: 5px;
     margin-bottom: 24px;
-    color: #0078ff;
+    color: #1a6ccaec;
   }
   
   .login-container .login-button {
     margin-bottom: 24px;
-    background-color: #0078ff;
+    background-color: #1a6ccaec;
     color: white;
   }
 
   .login-container .login-button:hover {
-    background-color: #006adb;
+    background-color: #175db1;
   }
 
   .login-box.error {

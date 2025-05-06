@@ -10,6 +10,7 @@ import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined';
 import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import GroupIcon from '@mui/icons-material/Group';
+import SchoolIcon from '@mui/icons-material/School';
 import { useRouter } from 'next/navigation'
 import './learnerprofile.css';
 import { ProtectedRoute } from '../../components/ProtectedRoute';
@@ -374,6 +375,10 @@ const LearnerDetail = () => {
             <Button variant="contained" className="button active" startIcon={<GroupIcon />} onClick={() => navigateTo('/learners')}>
               Learners
             </Button>
+            
+            <Button variant="text" className="button" startIcon={<SchoolIcon />} onClick={() => navigateTo('/courses')}>
+              Courses
+            </Button>
 
             <Button variant="text" className="button" startIcon={<ExitToAppIcon />} onClick={handleLogoutClick}>
               Logout
@@ -439,11 +444,11 @@ const LearnerDetail = () => {
                 </div>
               ) : (
                 registeredCourses.map((course) => (
-                  <div key={course.id} className="course" onClick={() => navigateToCourse(course.id)}>
-                    <div className="course-header">
-                      <img src={course.image} alt={course.title} className="course-image" />
-                      <div className="course-info">
-                        <Typography variant="h6" className="course-title">{course.title}</Typography>
+                  <div key={course.id} className="learner-course" onClick={() => navigateToCourse(course.id)}>
+                    <div className="learner-course-header">
+                      <img src={course.image} alt={course.title} className="learner-course-image" />
+                      <div className="learner-course-info">
+                        <Typography variant="h6" className="learner-course-title">{course.title}</Typography>
                       </div>
                     </div>
                   </div>

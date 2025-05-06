@@ -46,7 +46,7 @@ const CourseList: React.FC<CourseListProps> = ({ title, courses = [], onCourseCl
   }, []);
 
   return (
-    <Card className="course-list-dashboard">
+    <Card className="dashboard-course-list">
       <CardHeader title={<span className="title">{title}</span>} />
       <CardContent>
         {courses.length === 0 ? (
@@ -91,20 +91,20 @@ const CourseItem = ({ course, onCourseClick }: { course: CourseItem; onCourseCli
   }, [course.thumbnail]);
 
   return (
-    <div key={course.id} className="course" onClick={() => onCourseClick(course.id.toString())}>
-      <div className="course-header">
+    <div key={course.id} className="dashboard-course" onClick={() => onCourseClick(course.id.toString())}>
+      <div className="dashboard-course-header">
         <img
           src={imageSrc || "/Image/anime2.jpg"}
           alt={course.title}
-          className="course-image"
+          className="dashboard-course-image"
         />
-        <div className="course-details">
-          <Typography variant="subtitle1" className="course-title">
+        <div className="dashboard-course-details">
+          <Typography variant="subtitle1" className="dashboard-course-title">
             {course.title}
           </Typography>
           <Typography
             variant="body2"
-            className="course-description"
+            className="dashboard-course-description"
             sx={{
               overflow: "hidden",
               textOverflow: "ellipsis",
@@ -116,10 +116,10 @@ const CourseItem = ({ course, onCourseClick }: { course: CourseItem; onCourseCli
           >
             {course.description}
           </Typography>
-          <Typography variant="body2" className="course-price">
+          <Typography variant="body2" className="dashboard-course-price">
             Price: {course.price}
           </Typography>
-          <Typography variant="body2" className="course-lessons">
+          <Typography variant="body2" className="dashboard-course-lessons">
             Lessons: {course.lessons_count || 0}
           </Typography>
         </div>

@@ -57,7 +57,7 @@
   }
   
   .sidebar-nav .button.active {
-    background-color: #0078ff; 
+    background-color: #1a6ccaec; 
     color: #ffffff; 
   }
   
@@ -273,7 +273,7 @@
     gap: 2rem;
   }
   
-  .course {
+  .learner-course {
     border: 1px solid #364759; 
     border-radius: 15px; 
     padding: 16px;
@@ -287,24 +287,24 @@
     color: #e0e0e0;
   }
 
-  .course:hover {
+  .learner-course:hover {
     transform: translateY(-5px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
   }
   
-  .course-header {
+  .learner-course-header {
     display: flex;
     align-items: center;
     gap: 1rem;
   }
   
-  .course-info {
+  .learner-course-info {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
   }
 
-  .course-image {
+  .learner-course-image {
     width: 120px;
     height: 120px;
     margin-right: 10px;
@@ -313,7 +313,7 @@
     border: 1px solid #364759;
   }
   
-  .course-title {
+  .learner-course-title {
     font-size: 1.25rem;
     font-weight: 700;
     color: #e0e0e0;

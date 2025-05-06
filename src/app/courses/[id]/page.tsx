@@ -9,6 +9,7 @@ import { Typography, Card, CardContent, CircularProgress, Button, Dialog, Dialog
 import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined';
 import PersonIcon from '@mui/icons-material/Person';
 import GroupOutlinedIcon from '@mui/icons-material/GroupOutlined';
+import SchoolIcon from '@mui/icons-material/School';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import axios from 'axios';
 import './courseDetail.css';
@@ -254,10 +255,16 @@ const CourseDetail = () => {
           <Button variant="text" className="button" startIcon={<GroupOutlinedIcon />} onClick={() => navigateTo('/learners')}>
             Learners
           </Button>
+          
+          <Button variant="contained" className="button active" startIcon={<SchoolIcon />} onClick={() => navigateTo('/courses')}>
+              Courses
+          </Button>
 
           <Button variant="text" className="button" startIcon={<ExitToAppIcon />} onClick={handleLogoutClick}>
             Logout
           </Button>
+
+
         </nav>
 
         <div className="sidebar-footer">

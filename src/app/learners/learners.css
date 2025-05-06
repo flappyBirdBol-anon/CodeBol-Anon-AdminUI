@@ -55,8 +55,17 @@
   }
   
   .sidebar-nav .button.active {
-    background-color: #ebf8ff; 
-    color: #3b82f6; 
+    background-color: #1a6ccaec !important; 
+    color: #ffffff !important; 
+  }
+  
+  .sidebar-nav .MuiButton-contained.button.active {
+    background-color: #1a6ccaec !important;
+    color: #ffffff !important;
+  }
+  
+  .sidebar-nav .MuiButton-text.button {
+    background-color: transparent;
   }
   
   .sidebar-support {
@@ -138,7 +147,7 @@
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    background-color: #0078ff;
+    background-color: #1a6ccaec;
     color: white;
   }
   

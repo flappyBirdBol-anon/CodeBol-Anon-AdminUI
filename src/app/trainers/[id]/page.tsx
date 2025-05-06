@@ -9,6 +9,7 @@ import { Typography, Card, CardContent, Button, Dialog, DialogActions, DialogCon
 import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined';
 import PersonIcon from '@mui/icons-material/Person';
 import GroupOutlinedIcon from '@mui/icons-material/GroupOutlined';
+import SchoolIcon from '@mui/icons-material/School';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import { useRouter } from 'next/navigation'
 import './trainerprofile.css'; 
@@ -373,6 +374,10 @@ const TrainerDetail = () => {
             <Button variant="text" className="button" startIcon={<GroupOutlinedIcon />} onClick={() => navigateTo('/learners')}>
               Learners
             </Button>
+            
+            <Button variant="text" className="button" startIcon={<SchoolIcon />} onClick={() => navigateTo('/courses')}>
+              Courses
+            </Button>
 
             <Button variant="text" className="button" startIcon={<ExitToAppIcon />} onClick={handleLogoutClick}>
               Logout
@@ -452,15 +457,15 @@ const TrainerDetail = () => {
                 </div>
               ) : (
                 uploadedCourses.map((course) => (
-                  <div key={course.id} className="course" onClick={() => navigateToCourse(course.id)}>
-                    <div className="course-header">
-                      <img src={course.image} alt={course.title} className="course-image" />
-                      <div className="course-info">
-                        <Typography variant="h6" className="course-title">{course.title}</Typography>
-                        <Typography variant="body2" className="course-enrollment">
+                  <div key={course.id} className="trainer-course" onClick={() => navigateToCourse(course.id)}>
+                    <div className="trainer-course-header">
+                      <img src={course.image} alt={course.title} className="trainer-course-image" />
+                      <div className="trainer-course-info">
+                        <Typography variant="h6" className="trainer-course-title">{course.title}</Typography>
+                        <Typography variant="body2" className="trainer-course-enrollment">
                           Learners Enrolled: {course.learnersEnrolled}
                         </Typography>
-                        <Typography variant="body2" className="course-rating">
+                        <Typography variant="body2" className="trainer-course-rating">
                           Rating: {course.rating} ⭐
                         </Typography>
                       </div>

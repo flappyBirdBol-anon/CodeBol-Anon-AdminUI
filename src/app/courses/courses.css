@@ -1,0 +1,250 @@
+.dashboard-container {
+  display: flex;
+  min-height: 100vh;
+  background-color: #1e2a3a; /* Dark blue-gray background */
+}
+
+/* Sidebar */
+.sidebar {
+  width: 16rem; 
+  padding: 1rem; 
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem; 
+  border: 1px solid #2c3e50;
+  background-color: #263141; /* Slightly lighter than main background */
+}
+
+.sidebar-header {
+  display: flex;
+  padding: 1rem;
+  border-bottom: 1px solid #364759;
+  margin-bottom: 1rem;
+}
+
+.sidebar-header .admin-info {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.sidebar-header .admin-name {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #e0e0e0;
+  margin: 0;
+}
+
+.sidebar-header .admin-email {
+  font-size: 0.875rem;
+  color: #a0aec0;
+  margin: 0;
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.sidebar-nav .button {
+  display: flex;
+  justify-content: start;
+  gap: 0.75rem;
+  width: 100%;
+  color: #e0e0e0;
+}
+
+.sidebar-nav .button.active {
+  background-color: #1a6ccaec; 
+  color: #ffffff; 
+}
+
+.sidebar-footer {
+  margin-top: auto; 
+  padding: 1rem;
+  text-align: center;
+  font-size: 0.875rem;
+  color: #a0aec0;
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+  justify-content: center;
+  position: relative;
+  gap: 0.25rem; /* Add small gap between elements */
+}
+
+/* Main Content */
+.main-content {
+  flex: 1;
+  padding: 2rem;
+  background-color: #1e2a3a; /* Dark blue-gray background */
+}
+
+.main-content .header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.main-content .header .title {
+  font-weight: 700;
+  color: #e0e0e0;
+}
+
+/* Courses List Styling */
+.courses-page-container {
+  padding: 1rem 0;
+}
+
+.courses-page-list {
+  background-color: #1e2a3a; 
+  border-radius: 8px;
+  padding: 1.5rem;
+  border: 1px solid #364759;
+}
+
+.courses-page-search-filter {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.courses-page-search, .courses-page-filters {
+  min-width: 200px;
+  width: 100%;
+  max-width: 300px;
+}
+
+.courses-page-search input, .courses-page-filters {
+  background-color: #263141;
+  color: #e0e0e0;
+  border: 1px solid #364759;
+  border-radius: 4px;
+}
+
+.courses-page-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  margin-top: 1rem;
+}
+
+.courses-page-item {
+  display: flex;
+  flex-direction: column;
+  width: calc(33.333% - 2rem);
+  min-width: 300px;
+  background-color: #263141;
+  border-radius: 8px;
+  border: 1px solid #364759;
+  padding: 1.5rem;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  overflow: hidden;
+}
+
+.courses-page-item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  border-color: #4a76a8;
+}
+
+.courses-page-image {
+  width: 100%;
+  height: 200px;
+  border-radius: 8px;
+  object-fit: cover;
+  margin-bottom: 1rem;
+  border: 1px solid #364759;
+}
+
+.courses-page-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  height: 100%;
+}
+
+.courses-page-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #e0e0e0;
+  margin: 0;
+  line-height: 1.3;
+}
+
+.courses-page-description {
+  color: #a0aec0;
+  margin: 0;
+  flex-grow: 1;
+}
+
+.courses-page-price, .courses-page-lessons {
+  color: #a0aec0;
+  font-size: 0.875rem;
+}
+
+/* Burger Menu for Mobile */
+.burger-menu {
+  display: none;
+  cursor: pointer;
+  padding: 1rem;
+}
+
+.burger-menu div {
+  width: 25px;
+  height: 3px;
+  background-color: #e0e0e0;
+  margin: 5px 0;
+  transition: 0.4s;
+}
+
+/* Media Queries for Responsive Design */
+@media (max-width: 768px) {
+  .burger-menu {
+    display: block;
+  }
+
+  .dashboard-container {
+    flex-direction: column;
+  }
+
+  .dashboard-container .sidebar {
+    width: 100%;
+    order: 1;
+    display: none;
+  }
+
+  .dashboard-container .sidebar.visible {
+    display: flex;
+  }
+
+  .main-content {
+    order: 2;
+    padding: 1rem;
+  }
+
+  .courses-page-search-filter {
+    flex-direction: column;
+  }
+
+  .courses-page-item {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .sidebar-header .title {
+    font-size: 1rem;
+  }
+
+  .sidebar-nav .button {
+    font-size: 0.875rem;
+  }
+
+  .main-content .header .title {
+    font-size: 1.25rem;
+  }
+} 

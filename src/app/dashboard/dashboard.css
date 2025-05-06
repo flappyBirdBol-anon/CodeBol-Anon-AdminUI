@@ -57,8 +57,22 @@
 }
 
 .sidebar-nav .button.active {
-  background-color: #0078ff; 
-  color: #ffffff; 
+  background-color: #1a6ccaec !important; 
+  color: #ffffff !important; 
+}
+
+/* Add this to override MUI styles */
+.sidebar-nav .MuiButton-contained.button.active {
+  background-color: #1a6ccaec !important;
+  color: #ffffff !important;
+}
+
+.sidebar-nav .MuiButton-text.button {
+  background-color: transparent;
+}
+
+.sidebar-nav .button:hover {
+  background-color: rgba(26, 108, 202, 0.15);
 }
 
 .sidebar-support {
@@ -124,7 +138,7 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  background-color: #0078ff;
+  background-color: #1a6ccaec;
   color: #ffffff;
 }
 
@@ -174,7 +188,7 @@
 
 .stats-card .title {
   color: #ffffff; /* Change text color to white for better contrast */
-  background-color: #0078ff; /* Blue background */
+  background-color: #1a6ccaec; /* Blue background */
   padding: 0.5rem;
   width: 100%; /* Ensure the title spans the full width */
   text-align: center;
@@ -273,32 +287,78 @@
 .course-lists-dashboard {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 2rem;
-  background-color: #1e2a3a; /* Dark blue-gray background */
-  padding: 2rem;
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.course-list-container {
   border-radius: 8px;
-} 
-
-.course-lists-dashboard .course {
-  margin-bottom: 2rem;
+  background-color: #263141;
+  padding: 1rem;
+  border: 1px solid #364759;
 }
 
-.course {
-  border: 1px solid #364759; 
-  border-radius: 15px; 
-  padding: 16px;
-  background-color: #263141; /* Slightly lighter than main background */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  cursor: pointer;  
+.course-list-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #e0e0e0;
+  margin-bottom: 1rem;
 }
 
-.course:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+.dashboard-course-list {
+  background-color: transparent;
+  box-shadow: none;
 }
 
-/* Course List */
+.dashboard-course {
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  border-radius: 8px;
+  cursor: pointer;
+  background-color: rgba(38, 49, 65, 0.5);
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+}
+
+.dashboard-course:hover {
+  background-color: rgba(38, 49, 65, 0.8);
+  border-color: #4a76a8;
+}
+
+.dashboard-course-header {
+  display: flex;
+  align-items: flex-start;
+}
+
+.dashboard-course-image {
+  width: 60px;
+  height: 60px;
+  border-radius: 6px;
+  object-fit: cover;
+  margin-right: 12px;
+  border: 1px solid #364759;
+}
+
+.dashboard-course-details {
+  flex: 1;
+}
+
+.dashboard-course-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #e0e0e0;
+  margin: 0;
+}
+
+.dashboard-course-description {
+  color: #a0aec0;
+  margin: 0;
+}
+
+.dashboard-course-price, .dashboard-course-lessons {
+  color: #a0aec0;
+  font-size: 0.75rem;
+}
 
 .course-list {
   display: flex;
@@ -360,7 +420,7 @@
 .course-list-title {
   font-size: 1.25rem;
   font-weight: bold;
-  background-color: #0078ff; /* Blue background */
+  background-color: #1a6ccaec; /* Blue background */
   padding: 0.5rem;
   text-align: center;
   width: 100%; /* Ensure it spans the full width */
@@ -379,7 +439,7 @@
 }
 
 .course-list-title {
-  background-color: #0078ff; /* Blue background */
+  background-color: #1a6ccaec; /* Blue background */
   color: #ffffff; /* White text */
   font-size: 1.25rem;
   font-weight: bold;

@@ -47,7 +47,7 @@ div[class*="MuiSelect-root"] {
 /* Hover and focus states */
 .MuiInputBase-root:hover .MuiOutlinedInput-notchedOutline,
 .MuiInputBase-root.Mui-focused .MuiOutlinedInput-notchedOutline {
-  border-color: #0078ff !important;
+  border-color: #1a6ccaec !important;
 }
 
 /* Override any white backgrounds that might appear in other components */

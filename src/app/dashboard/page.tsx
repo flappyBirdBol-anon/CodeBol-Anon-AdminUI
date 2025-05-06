@@ -4,6 +4,7 @@ import { Download } from "lucide-react"
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined';
 import GroupOutlinedIcon from '@mui/icons-material/GroupOutlined';
+import SchoolIcon from '@mui/icons-material/School';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import { Button, Typography, CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material'
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, CategoryScale, LinearScale, PointElement, LineElement, Title } from 'chart.js'
@@ -273,7 +274,7 @@ const DashboardPage = () => {
       labels: formattedDates,
       datasets: [
         {
-          label: 'Total Registrations',
+          label: '',
           data: cumulativeCounts,
           borderColor: '#71a3c1',
           backgroundColor: 'rgba(113, 163, 193, 0.2)',
@@ -466,7 +467,7 @@ const DashboardPage = () => {
         { 'Metric': 'Users Interested in Most Popular Stack', 'Value': mostPopularStackUsers.toString() },
         { 'Metric': 'Most Popular Stack', 'Value': mostPopularStack },
         { 'Metric': 'Current Revenue', 'Value': currentRevenue },
-        { 'Metric': 'Total Registrations', 'Value': registrationData.length.toString() }
+        { 'Metric': 'User Registrations', 'Value': registrationData.length.toString() }
       ];
       
       // Add dashboard stats sheet
@@ -477,7 +478,7 @@ const DashboardPage = () => {
       if (learnerActivityData && learnerActivityData.labels) {
         const registrationTrends = learnerActivityData.labels.map((date: string, index: number) => ({
           'Date': date,
-          'Total Registrations': learnerActivityData.datasets[0].data[index]
+          'User Registrations': learnerActivityData.datasets[0].data[index]
         }));
         
         const registrationTrendsSheet = XLSX.utils.json_to_sheet(registrationTrends);
@@ -584,6 +585,15 @@ const DashboardPage = () => {
               onClick={() => navigateTo('/learners')}
             >
               Learners
+            </Button>
+            
+            <Button 
+              variant="text" 
+              className="button" 
+              startIcon={<SchoolIcon />} 
+              onClick={() => navigateTo('/courses')}
+            >
+              Courses
             </Button>
 
             <Button 

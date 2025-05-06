@@ -44,13 +44,7 @@ const StatsCard = ({ stats }: { stats: { title: string; value: string; chart?: b
                         },
                         plugins: {
                           legend: {
-                            position: 'top',
-                            align: 'start',
-                            labels: {
-                              boxWidth: 15,
-                              usePointStyle: true,
-                              pointStyle: 'rect'
-                            }
+                            display: false
                           }
                         },
                         elements: {

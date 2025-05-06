@@ -16,7 +16,7 @@ body {
     --card-foreground: 0 0% 100%; /* white text on cards */
     --popover: 217 33% 20%; /* same as card */
     --popover-foreground: 0 0% 100%; /* white text on popovers */
-    --primary: 212 100% 50%; /* #0078ff - vibrant blue */
+    --primary: 212 70% 45%; /* #1a6ccaec - blue */
     --primary-foreground: 0 0% 100%; /* white text on primary */
     --secondary: 215 25% 27%; /* #2d3c4e - darker accent color */
     --secondary-foreground: 210 17% 82%; /* light gray text on secondary */

@@ -3,6 +3,7 @@ import { Button, CircularProgress, Typography, Dialog, DialogActions, DialogCont
 import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined';
 import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined';
 import GroupIcon from '@mui/icons-material/Group';
+import SchoolIcon from '@mui/icons-material/School';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js'
 import { useRouter } from 'next/navigation'
@@ -123,6 +124,10 @@ const LearnersPage = () => {
 
             <Button variant="contained" className="button active" startIcon={<GroupIcon />} onClick={() => navigateTo('/learners')}>
               Learners
+            </Button>
+            
+            <Button variant="text" className="button" startIcon={<SchoolIcon />} onClick={() => navigateTo('/courses')}>
+              Courses
             </Button>
 
             <Button variant="text" className="button" startIcon={<ExitToAppIcon />} onClick={handleLogoutClick}>

@@ -57,7 +57,7 @@
   }
   
   .sidebar-nav .button.active {
-    background-color: #0078ff; 
+    background-color: #1a6ccaec; 
     color: #ffffff; 
   }
   
@@ -265,7 +265,7 @@
     gap: 2rem;
   }
   
-  .course {
+  .trainer-course {
     border: 1px solid #364759; 
     border-radius: 15px; 
     padding: 16px;
@@ -279,24 +279,24 @@
     color: #e0e0e0;
   }
 
-  .course:hover {
+  .trainer-course:hover {
     transform: translateY(-5px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
   }
   
-  .course-header {
+  .trainer-course-header {
     display: flex;
     align-items: center;
     gap: 1rem;
   }
   
-  .course-info {
+  .trainer-course-info {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
   }
 
-  .course-image {
+  .trainer-course-image {
     width: 120px;
     height: 120px;
     margin-right: 10px;
@@ -305,25 +305,25 @@
     border: 1px solid #364759;
   }
   
-  .course-title {
+  .trainer-course-title {
     font-size: 1.25rem;
     font-weight: 700;
     color: #e0e0e0;
     margin: 0;
   }
 
-  .course-rating {
+  .trainer-course-rating {
     color: #a0aec0;
     display: flex;
     align-items: center;
     gap: 0.25rem;
   }
 
-  .course .MuiLinearProgress-root {
+  .trainer-course .MuiLinearProgress-root {
     margin-top: 1rem;
   }
 
-  .course .course-progress-text {
+  .trainer-course .trainer-course-progress-text {
     margin-top: 0.5rem;
     font-size: 0.875rem;
     color: #a0aec0;
