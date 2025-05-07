@@ -221,7 +221,7 @@
 .stats-card .title {
   color: #ffffff;
   background: linear-gradient(90deg, #0078ff, #00a1ff);
-  padding: 0.75rem;
+  padding: 0.4rem;
   width: 100%;
   text-align: center;
   box-sizing: border-box;
@@ -238,7 +238,7 @@
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
-  padding: 3.5rem 1.5rem 1.5rem;
+  padding: 1.75rem 1.5rem 1rem;
   width: 100%;
 }
 
@@ -260,18 +260,21 @@
 
 .stats-card .chart-container {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 1.5rem;
   width: 100%;
   max-width: 100%;
-  padding: 0.5rem;
+  padding: 0.25rem;
+  margin-top: 0;
+  position: relative;
 }
 
 .stats-card .chart {
-  flex: 1;
-  width: 100%;
-  height: 400px !important;
+  width: 100% !important;
+  height: 500px !important;
   position: relative;
+  margin-top: 0.25rem;
+  padding: 0.25rem;
 }
 
 .learner-activity-card {
@@ -281,19 +284,23 @@
 .learner-activity-card .card-content {
   width: 100%;
   padding: 3.5rem 1.5rem 1.5rem !important;
+  padding-bottom: 2rem;
 }
 
 .learner-activity-card .chart-container {
   flex-direction: column;
   width: 100%;
-  height: 420px;
-  margin-top: 1rem;
+  height: auto;
+  margin-top: 0;
 }
 
 .learner-activity-card .chart {
   width: 100% !important;
-  height: 420px !important;
-  min-height: 420px;
+  height: 500px !important;
+  min-height: 500px;
+  margin-top: 0.25rem;
+  margin-bottom: 0.25rem;
+  padding-left: 10px;
 }
 
 .stats-card .labels {
@@ -388,12 +395,13 @@
   gap: 1rem;
 }
 
-.course-image {
-  width: 80px;
-  height: 80px;
-  border-radius: 8px;
+.dashboard-course-image {
+  width: 100%;
+  height: 150px;
   object-fit: cover;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  object-position: center;
+  border-radius: 8px 8px 0 0;
+  transition: transform 0.3s ease;
 }
 
 .course-details {
@@ -528,9 +536,20 @@
     align-items: center;
   }
   
-  .course-image {
+  .dashboard-course-image {
+    height: 120px;
+    max-width: 100%;
+  }
+  
+  .dashboard-course-image {
     width: 60px;
     height: 60px;
+  }
+  
+  .stats-card .chart,
+  .learner-activity-card .chart {
+    height: 450px !important;
+    min-height: 450px;
   }
 }
 
@@ -565,13 +584,24 @@
     gap: 0.75rem;
   }
   
-  .course-image {
-    width: 100%;
-    height: 120px;
+  .dashboard-course-image {
+    height: 100px;
+    max-width: 100%;
+  }
+  
+  .dashboard-course-image {
+    width: 50px;
+    height: 50px;
   }
   
   .main-content {
     padding: 1.5rem 1rem;
+  }
+  
+  .stats-card .chart,
+  .learner-activity-card .chart {
+    height: 400px !important;
+    min-height: 400px;
   }
 }
 
@@ -592,15 +622,19 @@
 }
 
 .combined-stat-item {
+  background-color: rgba(38, 49, 65, 0.8);
+  padding: 1.25rem;
+  border-radius: 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
   text-align: center;
-  padding: 1.25rem 1rem;
-  background-color: rgba(30, 42, 58, 0.7);
-  border-radius: 8px;
-  transition: all 0.2s ease;
-  border: 1px solid rgba(54, 71, 89, 0.5);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  min-height: 120px;
+  max-width: 100%;
+  overflow: hidden;
 }
 
 .combined-stat-item:hover {
@@ -643,4 +677,146 @@
   .combined-stats-grid {
     grid-template-columns: 1fr;
   }
+}
+
+/* Add dashboard-course-image styles */
+.dashboard-course-image {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 8px;
+  transition: transform 0.3s ease;
+}
+
+/* Dashboard course styling */
+.dashboard-course {
+  background-color: rgba(38, 49, 65, 0.8);
+  border-radius: 10px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border: 1px solid rgba(54, 71, 89, 0.5);
+}
+
+.dashboard-course:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+.dashboard-course-header {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.dashboard-course-details {
+  flex: 1;
+  overflow: hidden;
+}
+
+.dashboard-course-title {
+  font-weight: 600 !important;
+  color: white !important;
+  margin-bottom: 0.25rem !important;
+  font-size: 1rem !important;
+}
+
+.dashboard-course-description {
+  color: rgba(255, 255, 255, 0.7) !important;
+  font-size: 0.85rem !important;
+}
+
+.dashboard-course-meta {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+}
+
+.dashboard-course-price {
+  color: #0078ff !important;
+  font-weight: 600 !important;
+  background-color: rgba(0, 120, 255, 0.1);
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+}
+
+.dashboard-course-lessons {
+  color: rgba(255, 255, 255, 0.7) !important;
+  padding: 0.2rem 0.5rem;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+/* Media queries for responsive design */
+@media (max-width: 768px) {
+  .dashboard-course {
+    padding: 0.75rem;
+  }
+  
+  .dashboard-course-title {
+    font-size: 0.9rem !important;
+  }
+  
+  .dashboard-course-description {
+    font-size: 0.8rem !important;
+  }
+}
+
+/* Time period filters */
+.time-period-filters {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  margin-top: 0.25rem;
+  justify-content: center;
+  padding: 0;
+  width: 100%;
+  position: relative;
+  z-index: 5;
+}
+
+.time-period-filters .MuiButton-root {
+  background-color: rgba(38, 49, 65, 0.8);
+  color: #e0e0e0;
+  font-size: 0.8rem;
+  padding: 0.3rem 0.8rem;
+  min-width: 70px;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+}
+
+.time-period-filters .MuiButton-contained {
+  background: linear-gradient(90deg, #0078ff, #00a1ff);
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 120, 255, 0.3);
+}
+
+.time-period-filters .MuiButton-outlined {
+  border: 1px solid rgba(0, 120, 255, 0.5);
+}
+
+.time-period-filters .MuiButton-root:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive styles for time period filters */
+@media (max-width: 768px) {
+  .time-period-filters {
+    justify-content: center;
+  }
+  
+  .time-period-filters .MuiButton-root {
+    font-size: 0.8rem;
+    padding: 0.3rem 0.8rem;
+    min-width: 70px;
+  }
+}
+
+/* Ensure buttons don't overlap with chart area */
+.time-period-filters + .chart {
+  margin-top: 0.5rem;
 }

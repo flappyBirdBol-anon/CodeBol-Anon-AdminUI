@@ -64,6 +64,9 @@ interface StatItem {
   items?: StatItem[];
 }
 
+// Define time period types for registration data
+type TimePeriod = 'daily' | 'monthly' | 'yearly';
+
 const DashboardPage = () => {
   const { logout } = useAuth();
   const router = useRouter();
@@ -82,6 +85,8 @@ const DashboardPage = () => {
   const [learnerActivityData, setLearnerActivityData] = useState<any>(null);
   const [registrationLabels, setRegistrationLabels] = useState<string[]>([]);
   const [isExporting, setIsExporting] = useState(false);
+  // Add state for time period filter
+  const [timePeriod, setTimePeriod] = useState<TimePeriod>('daily');
 
   const toggleSidebar = () => {
     setSidebarVisible(!sidebarVisible);
@@ -142,7 +147,7 @@ const DashboardPage = () => {
           setRegistrationData(registrations);
           
           // Process registration data for line chart
-          processRegistrationData(registrations);
+          processRegistrationData(registrations, timePeriod);
 
           // Count the number of registrations for each course
           const courseViews = courses.map((course: { id: any; }) => ({
@@ -212,8 +217,8 @@ const DashboardPage = () => {
     fetchData();
   }, []);
 
-  // Process registration data for line chart
-  const processRegistrationData = (registrations: Registration[]) => {
+  // Process registration data for line chart - update to handle time periods
+  const processRegistrationData = (registrations: Registration[], period: TimePeriod = 'daily') => {
     if (!registrations || registrations.length === 0) return;
 
     // Sort registrations by created_at date
@@ -221,50 +226,92 @@ const DashboardPage = () => {
       new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
     );
 
-    // Get date range - use last 30 days
+    // Get date range based on time period
     const today = new Date();
-    const thirtyDaysAgo = new Date();
-    thirtyDaysAgo.setDate(today.getDate() - 30);
+    const startDate = new Date();
+    let groupingFormat: Intl.DateTimeFormatOptions;
+    let dateKeyFormat: (date: Date) => string;
 
-    // Create array of all days in the range
-    const days: Date[] = [];
-    const currentDay = new Date(thirtyDaysAgo);
-    while (currentDay <= today) {
-      days.push(new Date(currentDay));
-      currentDay.setDate(currentDay.getDate() + 1);
+    switch(period) {
+      case 'yearly':
+        // Last 5 years
+        startDate.setFullYear(today.getFullYear() - 5);
+        groupingFormat = { year: 'numeric' };
+        dateKeyFormat = (date) => date.getFullYear().toString();
+        break;
+      case 'monthly':
+        // Last 12 months
+        startDate.setMonth(today.getMonth() - 11);
+        startDate.setDate(1); // First day of month
+        groupingFormat = { year: 'numeric', month: 'short' };
+        dateKeyFormat = (date) => `${date.getFullYear()}-${date.getMonth() + 1}`;
+        break;
+      case 'daily':
+      default:
+        // Last 30 days
+        startDate.setDate(today.getDate() - 30);
+        groupingFormat = { month: 'short', day: 'numeric' };
+        dateKeyFormat = (date) => date.toISOString().split('T')[0];
+        break;
     }
 
-    // Initialize counts for each day
-    const registrationsByDay: { [key: string]: number } = {};
-    days.forEach(day => {
-      const dateKey = day.toISOString().split('T')[0];
-      registrationsByDay[dateKey] = 0;
+    // Create array of all periods in the range
+    const periods: Date[] = [];
+    const currentPeriod = new Date(startDate);
+    
+    switch(period) {
+      case 'yearly':
+        while (currentPeriod.getFullYear() <= today.getFullYear()) {
+          periods.push(new Date(currentPeriod));
+          currentPeriod.setFullYear(currentPeriod.getFullYear() + 1);
+        }
+        break;
+      case 'monthly':
+        while (currentPeriod <= today) {
+          periods.push(new Date(currentPeriod));
+          currentPeriod.setMonth(currentPeriod.getMonth() + 1);
+        }
+        break;
+      case 'daily':
+      default:
+        while (currentPeriod <= today) {
+          periods.push(new Date(currentPeriod));
+          currentPeriod.setDate(currentPeriod.getDate() + 1);
+        }
+        break;
+    }
+
+    // Initialize counts for each period
+    const registrationsByPeriod: { [key: string]: number } = {};
+    periods.forEach(date => {
+      const dateKey = dateKeyFormat(date);
+      registrationsByPeriod[dateKey] = 0;
     });
 
-    // Count registrations by day
+    // Count registrations by period
     sortedRegistrations.forEach(reg => {
       const regDate = new Date(reg.created_at);
-      const dateKey = regDate.toISOString().split('T')[0];
       
       // Only count if the date is within our range
-      if (regDate >= thirtyDaysAgo && regDate <= today) {
-        registrationsByDay[dateKey] = (registrationsByDay[dateKey] || 0) + 1;
+      if (regDate >= startDate && regDate <= today) {
+        const dateKey = dateKeyFormat(regDate);
+        registrationsByPeriod[dateKey] = (registrationsByPeriod[dateKey] || 0) + 1;
       }
     });
 
     // Format dates for display and get counts
-    const formattedDates = days.map(day => {
-      return day.toLocaleString('default', { month: 'short', day: 'numeric' });
+    const formattedDates = periods.map(date => {
+      return date.toLocaleString('default', groupingFormat);
     });
     
-    const dayCounts = days.map(day => {
-      const dateKey = day.toISOString().split('T')[0];
-      return registrationsByDay[dateKey] || 0;
+    const periodCounts = periods.map(date => {
+      const dateKey = dateKeyFormat(date);
+      return registrationsByPeriod[dateKey] || 0;
     });
 
     // Create cumulative counts
     let cumulativeCount = 0;
-    const cumulativeCounts = dayCounts.map(count => {
+    const cumulativeCounts = periodCounts.map(count => {
       cumulativeCount += count;
       return cumulativeCount;
     });
@@ -287,12 +334,17 @@ const DashboardPage = () => {
       ],
     });
 
-    // Log registration data to console for debugging
-    console.log('Registration data processed:', { 
+    console.log(`Registration data processed for ${period} view:`, { 
       registrationData: registrations.length,
       labels: formattedDates, 
       dataPoints: cumulativeCounts 
     });
+  };
+
+  // Function to handle time period change
+  const handleTimePeriodChange = (period: TimePeriod) => {
+    setTimePeriod(period);
+    processRegistrationData(registrationData, period);
   };
 
   useEffect(() => {
@@ -434,6 +486,13 @@ const DashboardPage = () => {
       console.log(`Total registrations loaded: ${registrationData.length}`);
     }
   }, [registrationData]);
+
+  // Update useEffect to handle time period changes
+  useEffect(() => {
+    if (registrationData.length > 0) {
+      processRegistrationData(registrationData, timePeriod);
+    }
+  }, [registrationData, timePeriod]);
 
   const stats: StatItem[] = [
     { 
@@ -672,8 +731,12 @@ const DashboardPage = () => {
             </Button>
           </div>  
 
-          {/* Stats List */}
-          <StatsList stats={stats} />
+          {/* Stats List with time period filters */}
+          <StatsList 
+            stats={stats} 
+            timePeriod={timePeriod}
+            onTimePeriodChange={handleTimePeriodChange}
+          />
           
           {/* Course Lists */}
           <div className="course-lists-dashboard">

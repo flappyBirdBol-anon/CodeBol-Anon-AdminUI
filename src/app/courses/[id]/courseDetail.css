@@ -245,27 +245,6 @@
     font-size: 1.25rem;
   }
 }
-
-/* Trainer Image Styling */
-.course-image {
-  width: 150px; /* Adjust width as needed */
-  height: 150px; /* Adjust height as needed */
-  border-radius: 50%; /* Make it circular */
-  object-fit: cover; /* Ensure the image fits within the bounds */
-  border: 2px solid #364759; /* Optional border for better visibility */
-  margin-bottom: 1rem; /* Add spacing below the image */
-}
-
-/* Ensure fallback behavior for broken images */
-.course-image::after {
-  content: '';
-  display: block;
-  width: 150px;
-  height: 150px;
-  background-color: #263141;
-  border-radius: 50%;
-}
-
 /* Comments Section Styling */
 .comments-section {
   margin-top: 2rem;

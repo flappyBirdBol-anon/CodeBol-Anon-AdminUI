@@ -1,9 +1,29 @@
 import React from 'react';
-import { Card, CardContent, CardHeader } from '@mui/material';
+import { Card, CardContent, CardHeader, Button } from '@mui/material';
 import { Pie, Line } from 'react-chartjs-2'
 
+// Define time period type
+type TimePeriod = 'daily' | 'monthly' | 'yearly';
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const StatsCard = ({ stats }: { stats: { title: string; value: string; chart?: boolean; chartData?: any; chartType?: string; labels?: any; combined?: boolean; items?: any[] }[] }) => {
+const StatsCard = ({ 
+  stats, 
+  timePeriod, 
+  onTimePeriodChange 
+}: { 
+  stats: { 
+    title: string; 
+    value: string; 
+    chart?: boolean; 
+    chartData?: any; 
+    chartType?: string; 
+    labels?: any; 
+    combined?: boolean; 
+    items?: any[] 
+  }[]; 
+  timePeriod?: TimePeriod;
+  onTimePeriodChange?: (period: TimePeriod) => void;
+}) => {
   return (
     <div className="stats-grid">
       {stats.map((stat) => {
@@ -32,8 +52,38 @@ const StatsCard = ({ stats }: { stats: { title: string; value: string; chart?: b
               {stat.value && <div className="value">{stat.value}</div>}
               {stat.chart && stat.chartData && (
                 <div className="chart-container">
+                  {/* Time period filters for line charts */}
+                  {stat.chartType === 'line' && onTimePeriodChange && (
+                    <div className="time-period-filters">
+                      <Button 
+                        variant={timePeriod === 'daily' ? "contained" : "outlined"}
+                        color="primary"
+                        onClick={() => onTimePeriodChange('daily')}
+                        sx={{ mr: 1 }}
+                      >
+                        Daily
+                      </Button>
+                      <Button 
+                        variant={timePeriod === 'monthly' ? "contained" : "outlined"}
+                        color="primary"
+                        onClick={() => onTimePeriodChange('monthly')}
+                        sx={{ mr: 1 }}
+                      >
+                        Monthly
+                      </Button>
+                      <Button 
+                        variant={timePeriod === 'yearly' ? "contained" : "outlined"}
+                        color="primary"
+                        onClick={() => onTimePeriodChange('yearly')}
+                      >
+                        Yearly
+                      </Button>
+                    </div>
+                  )}
+                  
+                  {/* Line Chart */}
                   {stat.chartType === 'line' ? (
-                    <div className="chart" style={{ width: '100%', height: '420px' }}>
+                    <div className="chart">
                       <Line 
                         data={stat.chartData}
                         options={{
@@ -46,17 +96,19 @@ const StatsCard = ({ stats }: { stats: { title: string; value: string; chart?: b
                                 color: 'rgba(255, 255, 255, 0.1)',
                               },
                               ticks: {
-                                padding: 10,
+                                padding: 15,
                                 color: 'rgba(255, 255, 255, 0.7)',
                                 font: {
-                                  size: 11
+                                  size: 14
                                 }
+                              },
+                              border: {
+                                display: false
                               }
                             },
                             x: {
                               grid: {
                                 color: 'rgba(255, 255, 255, 0.1)',
-                                tickLength: 8
                               },
                               ticks: {
                                 maxRotation: 45,
@@ -65,39 +117,34 @@ const StatsCard = ({ stats }: { stats: { title: string; value: string; chart?: b
                                 maxTicksLimit: 15,
                                 color: 'rgba(255, 255, 255, 0.7)',
                                 font: {
-                                  size: 11
+                                  size: 14
                                 }
                               }
                             }
                           },
                           plugins: {
                             legend: {
-                              position: 'top',
-                              align: 'start',
-                              labels: {
-                                boxWidth: 15,
-                                usePointStyle: true,
-                                pointStyle: 'rect',
-                                color: 'rgba(255, 255, 255, 0.9)',
-                                padding: 15,
-                                font: {
-                                  size: 12
-                                }
-                              }
+                              display: false,
                             },
                             tooltip: {
                               backgroundColor: 'rgba(0, 0, 0, 0.7)',
                               titleColor: 'rgba(255, 255, 255, 0.9)',
                               bodyColor: 'rgba(255, 255, 255, 0.9)',
-                              padding: 10,
+                              padding: 15,
                               cornerRadius: 5,
-                              boxPadding: 5
+                              boxPadding: 5,
+                              titleFont: {
+                                size: 16
+                              },
+                              bodyFont: {
+                                size: 14
+                              }
                             }
                           },
                           elements: {
                             point: {
-                              radius: 3,
-                              hoverRadius: 6,
+                              radius: 4,
+                              hoverRadius: 8,
                               backgroundColor: '#00a1ff',
                               borderColor: '#ffffff'
                             },
@@ -108,9 +155,9 @@ const StatsCard = ({ stats }: { stats: { title: string; value: string; chart?: b
                           },
                           layout: {
                             padding: {
-                              left: 10,
+                              left: 30,
                               right: 25,
-                              top: 30,
+                              top: 20,
                               bottom: 10
                             }
                           }
@@ -118,6 +165,7 @@ const StatsCard = ({ stats }: { stats: { title: string; value: string; chart?: b
                       />
                     </div>
                   ) : (
+                    /* Pie Chart */
                     <div className="chart">
                       <Pie 
                         data={stat.chartData}
@@ -145,6 +193,8 @@ const StatsCard = ({ stats }: { stats: { title: string; value: string; chart?: b
                       />
                     </div>
                   )}
+                  
+                  {/* Labels for pie charts */}
                   {stat.labels && stat.chartType !== 'line' && (
                     <div className="labels">
                       <div className="label">

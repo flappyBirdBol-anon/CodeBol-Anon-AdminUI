@@ -122,11 +122,11 @@ const CourseItem = ({ course, onCourseClick }: { course: CourseItem; onCourseCli
           >
             {course.description}
           </Typography>
-          <div className="course-meta">
-            <Typography variant="body2" className="course-price">
+          <div className="dashboard-course-meta">
+            <Typography variant="body2" className="dashboard-course-price">
               {formatPrice(course.price)}
             </Typography>
-            <Typography variant="body2" className="course-lessons">
+            <Typography variant="body2" className="dashboard-course-lessons">
               {course.lessons_count || 0} Lessons
             </Typography>
           </div>
