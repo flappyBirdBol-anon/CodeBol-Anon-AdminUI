@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @next/next/no-img-element */
 import React, { useEffect, useState } from "react";
-import { Card, CardContent, CardHeader, Typography } from "@mui/material";
+import { Card, CardContent, Typography } from "@mui/material";
 import axios from "axios";
 
 // Define the interface based on what your API actually returns
@@ -46,18 +46,17 @@ const CourseList: React.FC<CourseListProps> = ({ title, courses = [], onCourseCl
   }, []);
 
   return (
-    <Card className="dashboard-course-list">
-      <CardHeader title={<span className="title">{title}</span>} />
-      <CardContent>
-        {courses.length === 0 ? (
-          <Typography variant="body1">No courses available</Typography>
-        ) : (
-          courses.map((course) => (
-            <CourseItem key={course.id} course={course} onCourseClick={onCourseClick} />
-          ))
-        )}
-      </CardContent>
-    </Card>
+    <div className="course-list">
+      {courses.length === 0 ? (
+        <Typography variant="body1" sx={{ padding: "1rem", color: "rgba(255, 255, 255, 0.7)", textAlign: "center" }}>
+          No courses available
+        </Typography>
+      ) : (
+        courses.map((course) => (
+          <CourseItem key={course.id} course={course} onCourseClick={onCourseClick} />
+        ))
+      )}
+    </div>
   );
 };
 
@@ -90,6 +89,13 @@ const CourseItem = ({ course, onCourseClick }: { course: CourseItem; onCourseCli
     };
   }, [course.thumbnail]);
 
+  // Format the price to display consistently
+  const formatPrice = (price: string) => {
+    if (!price) return 'Free';
+    const numPrice = parseFloat(price);
+    return isNaN(numPrice) ? price : `$${numPrice.toFixed(2)}`;
+  };
+
   return (
     <div key={course.id} className="dashboard-course" onClick={() => onCourseClick(course.id.toString())}>
       <div className="dashboard-course-header">
@@ -109,19 +115,21 @@ const CourseItem = ({ course, onCourseClick }: { course: CourseItem; onCourseCli
               overflow: "hidden",
               textOverflow: "ellipsis",
               display: "-webkit-box",
-              WebkitLineClamp: 1,
+              WebkitLineClamp: 2,
               WebkitBoxOrient: "vertical",
               margin: "4px 0",
             }}
           >
             {course.description}
           </Typography>
-          <Typography variant="body2" className="dashboard-course-price">
-            Price: {course.price}
-          </Typography>
-          <Typography variant="body2" className="dashboard-course-lessons">
-            Lessons: {course.lessons_count || 0}
-          </Typography>
+          <div className="course-meta">
+            <Typography variant="body2" className="course-price">
+              {formatPrice(course.price)}
+            </Typography>
+            <Typography variant="body2" className="course-lessons">
+              {course.lessons_count || 0} Lessons
+            </Typography>
+          </div>
         </div>
       </div>
     </div>

@@ -60,6 +60,8 @@ interface StatItem {
   chartData?: any;
   chartType?: string;
   labels?: any;
+  combined?: boolean;
+  items?: StatItem[];
 }
 
 const DashboardPage = () => {
@@ -434,10 +436,19 @@ const DashboardPage = () => {
   }, [registrationData]);
 
   const stats: StatItem[] = [
-    { title: 'Current Active Users', value: activeUsers.toString() },
-    { title: '# of Users interested in Most Popular Stack', value: mostPopularStackUsers.toString() },
-    { title: 'Most popular stack of the Month', value: mostPopularStack || 'Loading...' }, // Add fallback
-    { title: 'Current Revenue', value: currentRevenue },
+    { 
+      title: 'Dashboard Statistics',
+      value: '',
+      chart: false,
+      chartType: '',
+      combined: true,
+      items: [
+        { title: 'Current Active Users', value: activeUsers.toString() },
+        { title: 'User Interest in Popular Stack', value: mostPopularStackUsers.toString() },
+        { title: 'Most popular stack of the Month', value: mostPopularStack || 'Loading...' },
+        { title: 'Current Revenue', value: currentRevenue }
+      ]
+    },
     { 
       title: 'User Registrations Over Time', 
       value: '', 
@@ -638,13 +649,26 @@ const DashboardPage = () => {
           <div className="header">
             <Typography variant="h4" className="title">Dashboard</Typography>
             <Button 
-              variant="outlined" 
+              variant="contained" 
               className="button" 
-              startIcon={isExporting ? <CircularProgress size={20} /> : <Download />}
+              startIcon={isExporting ? <CircularProgress size={20} color="inherit" /> : <Download size={18} />}
               onClick={handleExportToExcel}
               disabled={isExporting}
+              sx={{
+                background: 'linear-gradient(90deg, #0078ff, #00a1ff)',
+                boxShadow: '0 4px 12px rgba(0, 120, 255, 0.3)',
+                '&:hover': {
+                  background: 'linear-gradient(90deg, #0056b3, #0090e8)',
+                  transform: 'translateY(-2px)',
+                  boxShadow: '0 6px 14px rgba(0, 120, 255, 0.4)'
+                },
+                textTransform: 'none',
+                fontWeight: 500,
+                borderRadius: '8px',
+                padding: '0.6rem 1.2rem'
+              }}
             >
-              {isExporting ? 'Exporting...' : 'Download'}
+              {isExporting ? 'Exporting...' : 'Download Report'}
             </Button>
           </div>  
 
