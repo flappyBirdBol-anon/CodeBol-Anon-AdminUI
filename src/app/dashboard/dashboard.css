@@ -13,7 +13,7 @@
   flex-direction: column;
   gap: 1.5rem; 
   border-right: 1px solid rgba(54, 71, 89, 0.5);
-  background-color: rgba(38, 49, 65, 0.8); /* Slightly lighter with transparency */
+  background-color: #263141cc; /* Slightly lighter with transparency */
   box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2); /* Add shadow for depth */
   z-index: 100;
   transition: all 0.3s ease; /* Smooth transition for sidebar appearance */
