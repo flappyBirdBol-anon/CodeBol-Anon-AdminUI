@@ -275,6 +275,10 @@ const CourseDetail = () => {
 
       {/* Main Content */}
       <div className="main-content">
+        <div className="header">
+          <Typography variant="h4" className="title">Course Detail</Typography>
+        </div>
+        
         <Card className="course-card">
           <CardContent className="course-card-content">
             <div className="course-detail">

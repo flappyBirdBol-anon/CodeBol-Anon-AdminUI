@@ -215,7 +215,7 @@ const DashboardPage = () => {
     };
 
     fetchData();
-  }, []);
+  }, [timePeriod]);
 
   // Process registration data for line chart - update to handle time periods
   const processRegistrationData = (registrations: Registration[], period: TimePeriod = 'daily') => {

@@ -64,8 +64,10 @@ const CoursesList: React.FC<CoursesListProps> = ({ courses, title, onCourseClick
     };
 
     fetchImages();
-    
-    // Cleanup function to revoke object URLs
+  }, [courses]);
+
+  // Separate cleanup effect
+  useEffect(() => {
     return () => {
       Object.values(imagesMap).forEach(url => {
         if (url.startsWith('blob:')) {
@@ -73,7 +75,7 @@ const CoursesList: React.FC<CoursesListProps> = ({ courses, title, onCourseClick
         }
       });
     };
-  }, [courses]);
+  }, [imagesMap]);
 
   const sortedCourses = [...courses].sort((a, b) => {
     if (sortOrder === 'A-Z') {

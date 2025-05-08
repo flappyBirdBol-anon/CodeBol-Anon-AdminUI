@@ -5,22 +5,49 @@ import { Pie, Line } from 'react-chartjs-2'
 // Define time period type
 type TimePeriod = 'daily' | 'monthly' | 'yearly';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// Define interfaces for chart data
+interface ChartDataset {
+  label: string;
+  data: number[];
+  borderColor: string;
+  backgroundColor: string | string[];
+  borderWidth?: number;
+  tension?: number;
+  fill?: boolean;
+}
+
+interface ChartData {
+  labels: string[];
+  datasets: ChartDataset[];
+}
+
+interface StatLabels {
+  enrolled?: number;
+  notyetenrolled?: number;
+}
+
+interface StatItem {
+  title: string;
+  value: string;
+}
+
+interface Stat {
+  title: string;
+  value: string;
+  chart?: boolean;
+  chartData?: ChartData;
+  chartType?: string;
+  labels?: StatLabels;
+  combined?: boolean;
+  items?: StatItem[];
+}
+
 const StatsCard = ({ 
   stats, 
   timePeriod, 
   onTimePeriodChange 
 }: { 
-  stats: { 
-    title: string; 
-    value: string; 
-    chart?: boolean; 
-    chartData?: any; 
-    chartType?: string; 
-    labels?: any; 
-    combined?: boolean; 
-    items?: any[] 
-  }[]; 
+  stats: Stat[];
   timePeriod?: TimePeriod;
   onTimePeriodChange?: (period: TimePeriod) => void;
 }) => {
