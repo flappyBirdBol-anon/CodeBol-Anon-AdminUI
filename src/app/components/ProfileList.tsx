@@ -109,7 +109,7 @@ const ProfileList: React.FC<ProfileListProps> = ({ profiles, title, onProfileCli
                 <img src={profile.image} alt={profile.name} className="profile-image" />
                 <div className="profile-info">
                   <Typography variant="subtitle1" className="profile-name">{profile.name}</Typography>
-                  <Typography variant="body1">{profile.email}</Typography>
+                  <Typography variant="body2" className="profile-email">{profile.email}</Typography>
                 </div>
               </div>
             ))

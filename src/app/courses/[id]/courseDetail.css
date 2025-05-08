@@ -93,8 +93,8 @@
     }
 
     .sidebar {
-    width: 16rem;
-    padding: 1rem;
+    width: 14rem;
+    padding: 0.75rem;
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
@@ -104,7 +104,7 @@
 
     .sidebar-header {
     display: flex;
-    padding: 1rem;
+    padding: 0.75rem;
     border-bottom: 1px solid #364759;
     margin-bottom: 1rem;
     }
@@ -129,8 +129,8 @@
     }
 
     .sidebar-header .avatar {
-    width: 5rem;
-    height: 5rem;
+    width: 4rem;
+    height: 4rem;
     border-radius: 9999px;
     object-fit: cover;
     }
@@ -174,8 +174,8 @@
 
     .sidebar-footer .adminavatar {
     margin-bottom: 1rem;
-    width: 5rem;
-    height: 5rem;
+    width: 4rem;
+    height: 4rem;
     border-radius: 9999px;
     object-fit: cover;
     }
@@ -213,14 +213,34 @@
     }
 
     /* Enhanced responsive styles */
-    @media (min-width: 1280px) and (max-height: 920px) {
+    /* Specific styles for 1280x720 resolution */
+    @media (min-width: 1280px) and (max-height: 800px) {
+      .sidebar {
+        width: 12rem;
+        padding: 0.5rem;
+      }
+      
+      .sidebar-header {
+        padding: 0.5rem;
+      }
+      
+      .sidebar-header .avatar {
+        width: 3.5rem;
+        height: 3.5rem;
+      }
+      
+      .sidebar-footer .adminavatar {
+        width: 3.5rem;
+        height: 3.5rem;
+      }
+      
       .course-image {
         width: 100px;
         height: 100px;
       }
       
       .main-content {
-        padding: 1.5rem;
+        padding: 1.25rem;
       }
       
       .course-detail {
