@@ -309,13 +309,6 @@ const DashboardPage = () => {
       return registrationsByPeriod[dateKey] || 0;
     });
 
-    // Create cumulative counts
-    let cumulativeCount = 0;
-    const cumulativeCounts = periodCounts.map(count => {
-      cumulativeCount += count;
-      return cumulativeCount;
-    });
-
     setRegistrationLabels(formattedDates);
     
     // Update learner activity data for line chart
@@ -324,7 +317,7 @@ const DashboardPage = () => {
       datasets: [
         {
           label: '',
-          data: cumulativeCounts,
+          data: periodCounts,
           borderColor: '#71a3c1',
           backgroundColor: 'rgba(113, 163, 193, 0.2)',
           borderWidth: 2,
@@ -337,7 +330,7 @@ const DashboardPage = () => {
     console.log(`Registration data processed for ${period} view:`, { 
       registrationData: registrations.length,
       labels: formattedDates, 
-      dataPoints: cumulativeCounts 
+      dataPoints: periodCounts 
     });
   };
 
@@ -509,7 +502,7 @@ const DashboardPage = () => {
       ]
     },
     { 
-      title: 'User Registrations Over Time', 
+      title: 'User Registrations Per Period', 
       value: '', 
       chart: true, 
       chartData: learnerActivityData || {

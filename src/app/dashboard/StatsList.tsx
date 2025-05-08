@@ -96,6 +96,8 @@ const StatsCard = ({
                                 color: 'rgba(255, 255, 255, 0.1)',
                               },
                               ticks: {
+                                stepSize: 1,
+                                precision: 0,
                                 padding: 15,
                                 color: 'rgba(255, 255, 255, 0.7)',
                                 font: {
