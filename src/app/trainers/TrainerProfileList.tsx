@@ -11,7 +11,17 @@ interface Trainer {
   name: string;
   image: string;
   email: string; 
-  isActive: boolean; // Add this line
+  isActive: boolean;
+}
+
+interface ApiUser {
+  id: string;
+  first_name?: string;
+  last_name?: string;
+  email?: string;
+  role: string;
+  profile_picture?: string;
+  is_active: boolean;
 }
 
 const TrainersProfileList = () => {
@@ -19,6 +29,34 @@ const TrainersProfileList = () => {
   const [trainers, setTrainers] = useState<Trainer[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [imageUrls, setImageUrls] = useState<Record<string, string>>({});
+
+  // Load profile picture for a single user
+  const loadProfilePicture = async (userId: string, profilePicturePath: string) => {
+    if (!profilePicturePath) return;
+    
+    try {
+      const token = localStorage.getItem('adminToken');
+      if (!token) return;
+
+      const response = await fetch(`https://codebolanon.commesr.io/api/${profilePicturePath}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      
+      if (response.ok) {
+        const blob = await response.blob();
+        const imageUrl = URL.createObjectURL(blob);
+        
+        // Update the image URL for this specific user
+        setImageUrls(prev => ({
+          ...prev,
+          [userId]: imageUrl
+        }));
+      }
+    } catch (error) {
+      console.error(`Error loading profile picture for user ${userId}:`, error);
+    }
+  };
 
   useEffect(() => {
     const fetchTrainers = async () => {
@@ -40,46 +78,56 @@ const TrainersProfileList = () => {
         });
 
         if (response.data && response.data.data) {
-          const trainers = await Promise.all(response.data.data
-            .filter((user: any) => user.role === 'trainer')
-            .map(async (user: any, index: number) => {
-              let imageUrl = user.profile_picture || '/Image/blank.jpg';
-              if (user.profile_picture) {
-                try {
-                  const imageResponse = await fetch(`https://codebolanon.commesr.io/api/${user.profile_picture}`, {
-                    headers: { Authorization: `Bearer ${token}` }
-                  });
-                  if (imageResponse.ok) {
-                    const blob = await imageResponse.blob();
-                    imageUrl = URL.createObjectURL(blob);
-                  }
-                } catch (error) {
-                  console.error('Error fetching image:', error);
-                }
-              }
-              return {
-                id: user.id || `user-${index}`, // Fallback to index if id is missing or duplicate
-                name: `${user.first_name || ''} ${user.last_name || ''}`.trim(), // Handle missing name parts
-                image: imageUrl,
-                email: user.email || 'No email available',
-                isActive: user.is_active // Add this line
-              };
-            }));
-          console.log('Mapped trainers with IDs:', trainers);
-          setTrainers(trainers);
+          // First, create trainer objects with default images
+          const trainerUsers = response.data.data.filter((user: ApiUser) => user.role === 'trainer');
+          
+          // Create basic profiles with default images
+          const profiles = trainerUsers.map((user: ApiUser, index: number) => ({
+            id: user.id || `user-${index}`,
+            name: `${user.first_name || ''} ${user.last_name || ''}`.trim(),
+            image: '/Image/blank.jpg', // Default image
+            email: user.email || 'No email available',
+            isActive: user.is_active
+          }));
+          
+          // Set the profiles immediately to show content fast
+          setTrainers(profiles);
+          setIsLoading(false);
+          
+          // Begin loading profile pictures in the background
+          trainerUsers.forEach((user: ApiUser) => {
+            if (user.profile_picture && user.id) {
+              loadProfilePicture(user.id, user.profile_picture);
+            }
+          });
         } else {
           setError('Invalid data structure received from API');
+          setIsLoading(false);
         }
       } catch (error) {
         console.error('Error fetching trainers:', error);
         setError('Failed to fetch trainers. Please try again later.');
-      } finally {
         setIsLoading(false);
       }
     };
 
     fetchTrainers();
+    
+    // Cleanup function for blob URLs
+    return () => {
+      Object.values(imageUrls).forEach(url => {
+        if (url.startsWith('blob:')) {
+          URL.revokeObjectURL(url);
+        }
+      });
+    };
   }, []);
+
+  // Combine basic trainer data with loaded images
+  const trainersWithImages = trainers.map(trainer => ({
+    ...trainer,
+    image: imageUrls[trainer.id] || '/Image/blank.jpg'
+  }));
 
   const handleProfileClick = (id: string) => {
     router.push(`/trainers/${id}`);
@@ -94,7 +142,7 @@ const TrainersProfileList = () => {
       ) : error ? (
         <div>{error}</div>
       ) : (
-        <ProfileList profiles={trainers} title="Trainer Profiles" onProfileClick={handleProfileClick} />
+        <ProfileList profiles={trainersWithImages} title="Trainer Profiles" onProfileClick={handleProfileClick} />
       )}
     </div>
   );

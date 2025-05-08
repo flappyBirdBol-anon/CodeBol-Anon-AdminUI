@@ -49,6 +49,6 @@ export async function GET(request: NextRequest) {
     }
     
     // Redirect to default image
-    return NextResponse.redirect(new URL('/Image/anime1.jpg', request.url));
+    return NextResponse.redirect(new URL('/Image/blank.jpg', request.url));
   }
 }

@@ -34,40 +34,38 @@ const CoursesList: React.FC<CoursesListProps> = ({ courses, title, onCourseClick
     setSortOrder(event.target.value as string);
   };
 
-  // Fetch course images
-  useEffect(() => {
-    const fetchImages = async () => {
+  // Load image for a single course
+  const loadImage = async (course: Course) => {
+    try {
       const token = localStorage.getItem('adminToken');
       if (!token) return;
 
-      const images: Record<number, string> = {};
+      const response = await fetch(`https://codebolanon.commesr.io/api/${course.thumbnail}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
       
-      for (const course of courses) {
-        try {
-          const response = await fetch(`https://codebolanon.commesr.io/api/${course.thumbnail}`, {
-            headers: { Authorization: `Bearer ${token}` }
-          });
-          
-          if (response.ok) {
-            const blob = await response.blob();
-            images[course.id] = URL.createObjectURL(blob);
-          } else {
-            images[course.id] = '/Image/anime2.jpg'; // Fallback image
-          }
-        } catch (error) {
-          console.error('Error fetching image:', error);
-          images[course.id] = '/Image/anime2.jpg'; // Fallback image
-        }
+      if (response.ok) {
+        const blob = await response.blob();
+        const imageUrl = URL.createObjectURL(blob);
+        
+        setImagesMap(prev => ({
+          ...prev,
+          [course.id]: imageUrl
+        }));
       }
-      
-      setImagesMap(images);
-    };
+    } catch (error) {
+      console.error('Error fetching image for course:', course.id, error);
+    }
+  };
 
-    fetchImages();
-  }, [courses]);
-
-  // Separate cleanup effect
+  // Initialize image loading when courses change
   useEffect(() => {
+    // Start loading images for all courses
+    courses.forEach(course => {
+      loadImage(course);
+    });
+
+    // Cleanup function to revoke object URLs
     return () => {
       Object.values(imagesMap).forEach(url => {
         if (url.startsWith('blob:')) {
@@ -75,7 +73,7 @@ const CoursesList: React.FC<CoursesListProps> = ({ courses, title, onCourseClick
         }
       });
     };
-  }, [imagesMap]);
+  }, [courses]); // Only depend on courses array
 
   const sortedCourses = [...courses].sort((a, b) => {
     if (sortOrder === 'A-Z') {
@@ -127,7 +125,7 @@ const CoursesList: React.FC<CoursesListProps> = ({ courses, title, onCourseClick
               onClick={() => onCourseClick(course.id.toString())}
             >
               <img 
-                src={imagesMap[course.id] || '/Image/anime2.jpg'} 
+                src={imagesMap[course.id] || '/Image/blank.jpg'} 
                 alt={course.title} 
                 className="courses-page-image" 
                 style={{ objectPosition: 'center center' }}

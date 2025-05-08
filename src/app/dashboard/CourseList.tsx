@@ -64,26 +64,38 @@ const CourseItem = ({ course, onCourseClick }: { course: CourseItem; onCourseCli
   const [imageSrc, setImageSrc] = useState<string | null>(null);
 
   useEffect(() => {
-    let imageUrl: string | null = null;
-
-    const fetchImage = async () => {
+    const loadImage = async () => {
       try {
+        const token = localStorage.getItem("adminToken");
+        if (!token) return;
+        
         const response = await fetch(`https://codebolanon.commesr.io/api/${course.thumbnail}`, {
-          headers: { Authorization: `bearer ${localStorage.getItem("adminToken")}` },
+          headers: { Authorization: `Bearer ${token}` },
         });
-        if (!response.ok) throw new Error("Failed to fetch image");
-
-        const blob = await response.blob();
-        imageUrl = URL.createObjectURL(blob);
-        setImageSrc(imageUrl);
+        
+        if (response.ok) {
+          const blob = await response.blob();
+          const imageUrl = URL.createObjectURL(blob);
+          setImageSrc(imageUrl);
+          
+          // Return the URL for cleanup
+          return imageUrl;
+        }
       } catch (error) {
         console.error("Error fetching image:", error);
-        setImageSrc("/Image/anime1.jpg"); // Fallback image
       }
+      return null;
     };
 
-    fetchImage();
+    // Start loading the image immediately
+    let imageUrl: string | null = null;
+    loadImage().then(url => {
+      if (url) {
+        imageUrl = url;
+      }
+    });
 
+    // Cleanup function
     return () => {
       if (imageUrl) URL.revokeObjectURL(imageUrl);
     };
@@ -100,7 +112,7 @@ const CourseItem = ({ course, onCourseClick }: { course: CourseItem; onCourseCli
     <div key={course.id} className="dashboard-course" onClick={() => onCourseClick(course.id.toString())}>
       <div className="dashboard-course-header">
         <img
-          src={imageSrc || "/Image/anime2.jpg"}
+          src={imageSrc || "/Image/blank.jpg"}
           alt={course.title}
           className="dashboard-course-image"
         />
