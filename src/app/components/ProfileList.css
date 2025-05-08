@@ -1,0 +1,98 @@
+/* Profile List Component Styles */
+
+.search-filter-container {
+  display: flex !important;
+  gap: 16px !important;
+  margin-bottom: 24px !important;
+  align-items: center !important;
+  width: auto !important;
+  max-width: 600px !important;
+  justify-content: flex-start !important;
+}
+
+.search-input, .filter-select-container {
+  flex: 0 0 auto !important;
+  max-width: 300px !important;
+  min-width: 240px !important;
+  width: 240px !important;
+}
+
+.filter-select-container {
+  cursor: pointer !important;
+}
+
+.filter-select {
+  cursor: pointer !important;
+  width: 100% !important;
+  border-radius: 4px !important;
+  height: 56px !important;
+}
+
+/* Course style matching */
+.MuiOutlinedInput-notchedOutline {
+  border-color: #364759 !important;
+}
+
+.course-style-input {
+  background-color: #263141 !important;
+  border-radius: 4px !important;
+  height: 56px !important;
+}
+
+.course-style-input input {
+  padding: 16px !important;
+  color: #e0e0e0 !important;
+  height: 24px !important;
+}
+
+.course-style-input input::placeholder {
+  color: #a0aec0 !important;
+  opacity: 0.7 !important;
+}
+
+.course-style-select {
+  background-color: #263141 !important;
+  border-radius: 4px !important;
+  height: 56px !important;
+}
+
+.course-style-select .MuiSelect-select {
+  padding: 16px !important;
+  color: #e0e0e0 !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+.MuiSelect-select,
+.MuiSelect-outlined {
+  cursor: pointer !important;
+  background-color: #263141 !important;
+  color: #e0e0e0 !important;
+}
+
+.MuiSelect-icon {
+  color: #e0e0e0 !important;
+  pointer-events: none !important;
+  right: 16px !important;
+}
+
+.profiles-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+
+.profile {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  border: 1px solid #364759;
+  padding: 1rem;
+  border-radius: 8px;
+  flex: 1 1 calc(33.333% - 2rem);
+  background-color: #263141;
+  color: #e0e0e0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
+} 

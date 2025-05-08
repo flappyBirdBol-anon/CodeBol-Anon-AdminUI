@@ -415,3 +415,20 @@ div[class*="learner-profiles"] {
   color: #e0e0e0 !important;
 }
 
+.filter-select {
+  cursor: pointer !important;
+}
+
+.filter-select .MuiSelect-select {
+  cursor: pointer !important;
+}
+
+.MuiSelect-select,
+.MuiSelect-outlined {
+  cursor: pointer !important;
+}
+
+.MuiSelect-icon {
+  color: #e0e0e0 !important;
+}
+

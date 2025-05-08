@@ -266,19 +266,44 @@
 }
 
 .profile-info {
-  display: flex; 
+  display: flex;
   flex-direction: column;
+  flex: 1;
 }
 
 .profile-info .profile-name {
-  font-size: 1.5rem; 
-  color: #e0e0e0;
+  font-size: 1.125rem;
   font-weight: 600;
-  margin-bottom: 4px;
+  margin-bottom: 0.25rem;
+  color: #e0e0e0;
 }
 
 .profile-info .profile-email {
+  font-size: 0.875rem;
   color: #a0aec0;
+}
+
+/* Status indicators for profiles */
+.status-active, .status-blacklisted {
+  margin-top: 0.5rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  max-width: fit-content;
+}
+
+.status-active {
+  background-color: rgba(52, 211, 153, 0.2);
+  color: #34d399;
+  border: 1px solid rgba(52, 211, 153, 0.4);
+}
+
+.status-blacklisted {
+  background-color: rgba(248, 113, 113, 0.2);
+  color: #f87171;
+  border: 1px solid rgba(248, 113, 113, 0.4);
 }
 
 /* Burger Reactive elements */
@@ -400,6 +425,19 @@ div[class*="trainer-profiles"] {
 .MuiSelect-select,
 .MuiSelect-outlined {
   background-color: #263141 !important;
+  color: #e0e0e0 !important;
+  cursor: pointer !important;
+}
+
+.filter-select {
+  cursor: pointer !important;
+}
+
+.filter-select .MuiSelect-select {
+  cursor: pointer !important;
+}
+
+.MuiSelect-icon {
   color: #e0e0e0 !important;
 }
 
