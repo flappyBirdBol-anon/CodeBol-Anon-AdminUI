@@ -12,6 +12,8 @@
     margin-bottom: 2rem; 
     padding-bottom: 1rem;
     border-bottom: 1px solid #364759;
+    flex-wrap: wrap;
+    gap: 1rem;
   }
 
   .main-content .header .title {
@@ -27,27 +29,32 @@
     border: 1px solid #364759;
     padding: 1rem;
     border-radius: 8px;
-    flex: 1 1 calc(33.333% - 2rem); 
+    width: 100%;
     background-color: #263141;
     color: #e0e0e0;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    flex-wrap: wrap;
     }
 
     .course-info {
     display: flex;
-    flex-direction: column; /* Stack title and description vertically */
+    flex-direction: column;
+    flex: 1;
+    min-width: 250px;
     }
 
     .course-title {
     font-size: 1.5rem;
     font-weight: 700;
-    margin-bottom: 0.5rem; /* Add spacing below the title */
+    margin-bottom: 0.5rem;
     color: #e0e0e0;
+    word-break: break-word;
     }
 
     .course-description {
     font-size: 1rem;
-    color: #a0aec0; /* Optional: Add a lighter color for the description */
+    color: #a0aec0;
+    word-break: break-word;
     }
 
     .course-card {
@@ -56,6 +63,7 @@
     border: 1px solid #364759;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    width: 100%;
     }
 
     .course-card-content {
@@ -64,27 +72,24 @@
 
     .course-header {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 1rem;
     }
 
     .course-image {
     width: 120px;
     height: 120px;
-    margin-right: 10px;
     border-radius: 4px;
     border: 1px solid #364759;
-    }
-
-    .course-title {
-    font-size: 1.5rem;
-    font-weight: 700;
+    object-fit: cover;
     }
 
     /* Sidebar CSS */
     .dashboard-container {
     display: flex;
     min-height: 100vh;
-    background-color: #1e2a3a; /* Dark blue-gray background */
+    background-color: #1e2a3a;
     }
 
     .sidebar {
@@ -207,74 +212,130 @@
     display: none;
     }
 
+    /* Enhanced responsive styles */
+    @media (min-width: 1280px) and (max-height: 920px) {
+      .course-image {
+        width: 100px;
+        height: 100px;
+      }
+      
+      .main-content {
+        padding: 1.5rem;
+      }
+      
+      .course-detail {
+        padding: 0.75rem;
+      }
+      
+      .course-title {
+        font-size: 1.25rem;
+      }
+      
+      .course-card-content {
+        padding: 0.75rem;
+      }
+    }
+
+    @media (max-width: 1279px) {
+      .course-header {
+        flex-direction: column;
+      }
+      
+      .main-content {
+        padding: 1.5rem;
+      }
+      
+      .course-image {
+        width: 100%;
+        max-width: 200px;
+        height: auto;
+        aspect-ratio: 1/1;
+      }
+    }
+
     @media (max-width: 768px) {
-  .burger-menu {
-    display: block;
-  }
+      .burger-menu {
+        display: block;
+      }
 
-  .dashboard-container {
-    flex-direction: column;
-  }
+      .dashboard-container {
+        flex-direction: column;
+      }
 
-  .dashboard-container .sidebar {
-    width: 100%;
-    order: 1;
-    display: none;
-  }
+      .dashboard-container .sidebar {
+        width: 100%;
+        order: 1;
+        display: none;
+      }
 
-  .dashboard-container .sidebar.visible {
-    display: flex;
-  }
+      .dashboard-container .sidebar.visible {
+        display: flex;
+      }
 
-  .main-content {
-    order: 2;
-    padding: 1rem;
-  }
-}
+      .main-content {
+        order: 2;
+        padding: 1rem;
+      }
+      
+      .main-content .header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      
+      .course-detail {
+        padding: 0.75rem;
+      }
+    }
 
-@media (max-width: 480px) {
-  .sidebar-header .title {
-    font-size: 1rem;
-  }
+    @media (max-width: 480px) {
+      .sidebar-header .title {
+        font-size: 1rem;
+      }
 
-  .sidebar-nav .button {
-    font-size: 0.875rem;
-  }
+      .sidebar-nav .button {
+        font-size: 0.875rem;
+      }
 
-  .main-content .header .title {
-    font-size: 1.25rem;
-  }
-}
+      .main-content .header .title {
+        font-size: 1.25rem;
+      }
+      
+      .course-title {
+        font-size: 1.25rem;
+      }
+      
+      .course-description {
+        font-size: 0.875rem;
+      }
+    }
+    
 /* Comments Section Styling */
 .comments-section {
   margin-top: 2rem;
-  padding: 1rem;
-  border: 1px solid #364759;
-  border-radius: 8px;
-  background-color: #263141;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  width: 100%;
 }
 
 .comments-title {
   font-size: 1.25rem;
-  font-weight: 700;
+  font-weight: 600;
   margin-bottom: 1rem;
   color: #e0e0e0;
 }
 
 .comment-card {
-  margin-bottom: 1rem;
-  padding: 1rem;
+  background-color: #263141;
   border: 1px solid #364759;
   border-radius: 8px;
-  background-color: #2c3d52;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  padding: 1rem;
+  margin-bottom: 1rem;
+  width: 100%;
 }
 
 .comment-text {
   font-size: 1rem;
-  margin-bottom: 0.5rem;
   color: #e0e0e0;
+  margin-bottom: 0.5rem;
+  word-break: break-word;
 }
 
 .comment-author {
@@ -284,11 +345,10 @@
 }
 
 .comment-author-image {
-  width: 40px;
-  height: 40px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   object-fit: cover;
-  border: 1px solid #364759;
 }
 
 .comment-author-name {
@@ -299,5 +359,7 @@
 .no-comments {
   font-size: 1rem;
   color: #a0aec0;
+  font-style: italic;
   text-align: center;
+  padding: 1rem;
 }
